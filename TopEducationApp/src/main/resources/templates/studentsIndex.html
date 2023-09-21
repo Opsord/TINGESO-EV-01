@@ -7,12 +7,14 @@
 </head>
 <body>
 <div class="container-sm">
+
+<h1>Students</h1>
   <table class="table">
     <thead class="thead-dark">
     <tr>
       <th>ID</th>
-      <th>nombre</th>
-      <th>email</th>
+      <th>RUT</th>
+      <th>School</th>
     </tr>
     </thead>
     <tbody>
@@ -21,8 +23,8 @@
       <td th:text="${student.rut}">John</td>
       <td th:text="${student.schoolName}">
       <td>
-        <a class="btn btn-primary" href="#" role="button">Editar</a>
-        <a class="btn btn-danger" href="#" role="button">Eliminar</a>
+        <a class="btn btn-primary" href="#" role="button">Edit</a>
+        <a class="btn btn-danger" href="#" role="button">Delete</a>
       </td>
     </tr>
     </tbody>

@@ -24,6 +24,6 @@ public class StudentController {
     public String listStudents(Model model) {
         ArrayList<StudentEntity> students = studentService.getAllStudents();
         model.addAttribute("students", students);
-        return "studentsIdenx";
+        return "studentsIndex";
     }
 }

@@ -1,10 +1,12 @@
 package TINGESO.TopEducation.repositories;
 
-import org.springframework.data.repository.CrudRepository;
+//import org.springframework.data.repository.CrudRepository; (not used)
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import TINGESO.TopEducation.entities.StudentEntity;
 
 @Repository
 
-public interface StudentReposotiry extends CrudRepository<StudentReposotiry, Long>  {
-
+public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
+    //Custom query's here
 }

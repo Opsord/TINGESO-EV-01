@@ -1,2 +1,10 @@
-package TINGESO.TopEducation.controllers;public class StudentController {
+package TINGESO.TopEducation.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping
+
+public class StudentController {
 }

@@ -1,7 +1,8 @@
-package TINGESO.TopEducation.controllers;
+package TopEducation.TopEducationApp.controllers;
 
-import TINGESO.TopEducation.entities.StudentEntity;
-import TINGESO.TopEducation.services.StudentService;
+
+import TopEducation.TopEducationApp.entities.StudentEntity;
+import TopEducation.TopEducationApp.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,7 @@ public class StudentController {
 
     @GetMapping("/students")
     public String listStudents(Model model) {
-        ArrayList<StudentEntity> students = studentService.getAllStudents();//Problema: no se puede acceder a StudentService
+        ArrayList<StudentEntity> students = studentService.getAllStudents();
         model.addAttribute("students", students);
         return "studentsIdenx";
     }

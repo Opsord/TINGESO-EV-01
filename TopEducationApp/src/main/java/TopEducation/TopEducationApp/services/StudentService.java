@@ -1,7 +1,8 @@
-package TINGESO.TopEducation.services;
+package TopEducation.TopEducationApp.services;
 
-import TINGESO.TopEducation.entities.StudentEntity;
-import TINGESO.TopEducation.repositories.StudentRepository;
+
+import TopEducation.TopEducationApp.entities.StudentEntity;
+import TopEducation.TopEducationApp.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;

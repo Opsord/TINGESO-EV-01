@@ -7,6 +7,7 @@ import TINGESO.TopEducation.entities.StudentEntity;
 
 @Repository
 
+//Part of the persistence layer
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
     //Custom query's here
 }

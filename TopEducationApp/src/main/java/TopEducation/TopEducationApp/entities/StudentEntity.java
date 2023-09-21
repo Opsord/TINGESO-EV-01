@@ -1,4 +1,4 @@
-package TINGESO.TopEducation.entities;
+package TopEducation.TopEducationApp.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

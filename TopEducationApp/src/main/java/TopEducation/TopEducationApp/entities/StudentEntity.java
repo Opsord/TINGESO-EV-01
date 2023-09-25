@@ -23,7 +23,7 @@ public class StudentEntity {
     private Long id;
 
     //RUT is a unique identifier for Chilean citizens
-    private long rut;
+    private String rut;
 
     //First name
     private String firstName;
@@ -34,7 +34,7 @@ public class StudentEntity {
     //Birthdate
     private LocalDate birthDate;
 
-    //School type: 0 for municipal, 1 for subsidized, 2 for private
+    //School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
     private int schoolType;
 
     //School name

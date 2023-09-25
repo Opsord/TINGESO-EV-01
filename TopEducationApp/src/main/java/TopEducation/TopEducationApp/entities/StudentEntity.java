@@ -43,4 +43,7 @@ public class StudentEntity {
     //Year of graduation
     private int graduationYear;
 
+    //Average grade in tests
+    private double averageGrade;
+
 }

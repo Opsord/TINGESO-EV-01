@@ -173,7 +173,7 @@ class AdministrationOfficeTest {
 
     @Test
     //Test for the calculateAnnualCostInstallments with incorrect values
-    void calculateAnnualCostInstallmentsEmptyRut() {
+    void calculateAnnualCostInstallmentsEmpty() {
         //Setting up the student
         student.setRut("");
         student.setFirstName("");
@@ -187,5 +187,52 @@ class AdministrationOfficeTest {
         assertEquals(0, annualCostInstallments, 0.0);
     }
 
+    @Test
+    //Test for the calculate max installments with correct values
+    void calculateMaxInstallments() {
+        //Setting up the student
+        student.setRut("20.000.000-2");
+        student.setFirstName("Juan");
+        student.setLastName("Perez");
+        student.setBirthDate(LocalDate.of(1990, 1, 1));
+        student.setSchoolType(0);
+        student.setGraduationYear(2010);
+
+        //Simulating the payment in installments
+        int maxInstallments = administrationOffice.calculateMaxInstallments(student);
+        assertEquals(10, maxInstallments, 0.0);
+    }
+
+    @Test
+    //Test for the calculate max installments with incorrect values
+    void calculateMaxInstallmentsEmptyRut() {
+        //Setting up the student
+        student.setRut("");
+        student.setFirstName("Aquiles");
+        student.setLastName("Baeza");
+        student.setBirthDate(LocalDate.of(1995, 10, 15));
+        student.setSchoolType(2);
+        student.setGraduationYear(2015);
+
+        //Simulating the payment in installments
+        int maxInstallments = administrationOffice.calculateMaxInstallments(student);
+        assertEquals(0, maxInstallments, 0.0);
+    }
+
+    @Test
+    //Test for the calculate max installments with invalid school type
+    void calculateMaxInstallmentsInvalidSchoolType() {
+        //Setting up the student
+        student.setRut("20.777.666-2");
+        student.setFirstName("Juan");
+        student.setLastName("Perez");
+        student.setBirthDate(LocalDate.of(1970, 1, 1));
+        student.setSchoolType(10);
+        student.setGraduationYear(2010);
+
+        //Simulating the payment in installments
+        int maxInstallments = administrationOffice.calculateMaxInstallments(student);
+        assertEquals(0, maxInstallments, 0.0);
+    }
 
 }

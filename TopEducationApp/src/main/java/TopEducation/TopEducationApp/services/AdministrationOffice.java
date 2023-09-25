@@ -106,4 +106,27 @@ public class AdministrationOffice {
         }
     }
 
+    //Calculate the maximum number of installments
+    public int calculateMaxInstallments(StudentEntity student) {
+        //Getting the type of school of the student
+        int schoolType = student.getSchoolType();
+        int maxInstallments = 0;
+        //School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
+        if (schoolType == 0) {
+            maxInstallments = 10;
+        } else if (schoolType == 1) {
+            maxInstallments = 7;
+        } else if (schoolType == 2) {
+            maxInstallments = 4;
+        }
+        //Adding a validation to avoid fraud
+        if (isValidStudent(student)) {
+            return maxInstallments;
+        } else {
+            return 0;
+        }
+    }
+
+
+
 }

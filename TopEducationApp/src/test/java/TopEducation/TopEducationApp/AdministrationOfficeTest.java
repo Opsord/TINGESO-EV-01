@@ -12,7 +12,7 @@ class AdministrationOfficeTest {
     AdministrationOffice administrationOffice = new AdministrationOffice();
 
     @Test
-    //Test for the calculateAnnualCostInstallments with correct values
+    //Test for the calculateAnnualCostCash with correct values
     void calculateAnnualCostCash() {
         //Setting up the student
         student.setRut("20.000.000-2");
@@ -28,7 +28,7 @@ class AdministrationOfficeTest {
     }
 
     @Test
-        //Test for the calculateAnnualCostInstallments with incorrect RUT
+        //Test for the calculateAnnualCostCash with incorrect RUT
     void calculateAnnualCostCashEmptyRut() {
         //Setting up the student
         student.setRut("");
@@ -44,7 +44,7 @@ class AdministrationOfficeTest {
     }
 
     @Test
-    //Test for the calculateAnnualCostInstallments with empty first name
+    //Test for the calculateAnnualCostCash with empty first name
     void calculateAnnualCostCashEmptyFirstName() {
         //Setting up the student
         student.setRut("20.000.666-2");
@@ -60,7 +60,7 @@ class AdministrationOfficeTest {
     }
 
     @Test
-    //Test for the calculateAnnualCostInstallments with empty last name
+    //Test for the calculateAnnualCostCash with empty last name
     void calculateAnnualCostCashEmptyLastName() {
         //Setting up the student
         student.setRut("20.000.666-2");
@@ -76,7 +76,7 @@ class AdministrationOfficeTest {
     }
 
     @Test
-    //Test for the calculateAnnualCostInstallments with invalid birthdate
+    //Test for the calculateAnnualCostCash with invalid birthdate
     void calculateAnnualCostCashInvalidBirthDate() {
         //Setting up the student
         student.setRut("20.000.666-2");
@@ -92,7 +92,7 @@ class AdministrationOfficeTest {
     }
 
     @Test
-    //Test for the calculateAnnualCostInstallments with invalid school type
+    //Test for the calculateAnnualCostCash with invalid school type
     void calculateAnnualCostCashInvalidSchoolType() {
         //Setting up the student
         student.setRut("20.000.666-2");
@@ -108,7 +108,7 @@ class AdministrationOfficeTest {
     }
 
     @Test
-    //Test for the calculateAnnualCostInstallments with invalid graduation year
+    //Test for the calculateAnnualCostCash with invalid graduation year
     void calculateAnnualCostCashInvalidGraduationYear() {
         //Setting up the student
         student.setRut("20.000.666-2");
@@ -121,38 +121,6 @@ class AdministrationOfficeTest {
         //Simulating the payment in cash
         double annualCostCash = administrationOffice.calculateAnnualCostCash(student);
         assertEquals(0, annualCostCash, 0.0);
-    }
-
-    @Test
-    //Test for the calculateAnnualCostInstallments with type 0 and range 3
-    void calculateAnnualCostInstallmentsType0Range3() {
-        //Setting up the student
-        student.setRut("20.000.000-2");
-        student.setFirstName("Juan");
-        student.setLastName("Perez");
-        student.setBirthDate(LocalDate.of(1990, 1, 1));
-        student.setSchoolType(0);
-        student.setGraduationYear(2020);
-
-        //Simulating the payment in installments
-        double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
-        assertEquals(1193200, annualCostInstallments, 1.0);//1.193.200 CLP
-    }
-
-    @Test
-    //Test for the calculateAnnualCostInstallments with type 1 and range 2
-    void calculateAnnualCostInstallmentsType1Range2() {
-        //Setting up the student
-        student.setRut("20.000.000-2");
-        student.setFirstName("Armando");
-        student.setLastName("Casas");
-        student.setBirthDate(LocalDate.of(1990, 1, 1));
-        student.setSchoolType(1);
-        student.setGraduationYear(2021);
-
-        //Simulating the payment in installments
-        double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
-        assertEquals(1287400, annualCostInstallments, 1.0);//1.287.400 CLP
     }
 
     @Test
@@ -169,6 +137,54 @@ class AdministrationOfficeTest {
         //Simulating the payment in installments
         double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
         assertEquals(1334500, annualCostInstallments, 1.0);//1.334.500 CLP
+    }
+
+    @Test
+        //Test for the calculateAnnualCostInstallments with type 1 and range 2
+    void calculateAnnualCostInstallmentsType1Range2() {
+        //Setting up the student
+        student.setRut("20.000.000-2");
+        student.setFirstName("Armando");
+        student.setLastName("Casas");
+        student.setBirthDate(LocalDate.of(1990, 1, 1));
+        student.setSchoolType(1);
+        student.setGraduationYear(2021);
+
+        //Simulating the payment in installments
+        double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
+        assertEquals(1287400, annualCostInstallments, 1.0);//1.287.400 CLP
+    }
+
+    @Test
+        //Test for the calculateAnnualCostInstallments with type 0 and range 3
+    void calculateAnnualCostInstallmentsType0Range3() {
+        //Setting up the student
+        student.setRut("20.000.000-2");
+        student.setFirstName("Juan");
+        student.setLastName("Perez");
+        student.setBirthDate(LocalDate.of(1990, 1, 1));
+        student.setSchoolType(0);
+        student.setGraduationYear(2020);
+
+        //Simulating the payment in installments
+        double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
+        assertEquals(1193200, annualCostInstallments, 1.0);//1.193.200 CLP
+    }
+
+    //Test for the calculateAnnualCostInstallments with type 0 and range 4
+    @Test
+    void calculateAnnualCostInstallmentsType0Range4() {
+        //Setting up the student
+        student.setRut("20.000.000-2");
+        student.setFirstName("Aquiles");
+        student.setLastName("Voy");
+        student.setBirthDate(LocalDate.of(1990, 1, 1));
+        student.setSchoolType(0);
+        student.setGraduationYear(2010);
+
+        //Simulating the payment in installments
+        double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
+        assertEquals(1256000, annualCostInstallments, 1.0);//1.256.000 CLP
     }
 
     @Test
@@ -195,12 +211,28 @@ class AdministrationOfficeTest {
         student.setFirstName("Juan");
         student.setLastName("Perez");
         student.setBirthDate(LocalDate.of(1990, 1, 1));
-        student.setSchoolType(0);
+        student.setSchoolType(1);
         student.setGraduationYear(2010);
 
         //Simulating the payment in installments
         int maxInstallments = administrationOffice.calculateMaxInstallments(student);
-        assertEquals(10, maxInstallments, 0.0);
+        assertEquals(7, maxInstallments, 0.0);
+    }
+
+    //Test for the calculate max installments with incorrect values
+    @Test
+    void calculateMaxInstallmentsInvalidGraduationYear() {
+        //Setting up the student
+        student.setRut("20.000.000-2");
+        student.setFirstName("Juan");
+        student.setLastName("Perez");
+        student.setBirthDate(LocalDate.of(1990, 1, 1));
+        student.setSchoolType(0);
+        student.setGraduationYear(1600);
+
+        //Simulating the payment in installments
+        int maxInstallments = administrationOffice.calculateMaxInstallments(student);
+        assertEquals(0, maxInstallments, 0.0);
     }
 
     @Test

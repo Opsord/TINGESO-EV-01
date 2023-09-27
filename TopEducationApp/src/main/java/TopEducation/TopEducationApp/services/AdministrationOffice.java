@@ -15,29 +15,38 @@ public class AdministrationOffice {
         //Verify if the student´s parameters are valid
 
         //Verify if the student has a valid rut
-        if (student.getRut() == null || student.getRut().isBlank()) {
+        if (student.getRut() == null
+                || student.getRut().isBlank() ){
             return false;
         }
         //Verify if the student has a valid first name
-        if (student.getFirstName() == null || student.getFirstName().isBlank() ) {
+        if (student.getFirstName() == null
+                || student.getFirstName().isBlank() ){
             return false;
         }
         //Verify if the student  last name
-        if (student.getLastName() == null || student.getLastName().isBlank()) {
+        if (student.getLastName() == null
+                || student.getLastName().isBlank() ){
             return false;
         }
         //Verify if the student´s birthdate is valid
         LocalDate currentDate = LocalDate.now();
-        if (student.getBirthDate() == null || student.getBirthDate().isAfter(currentDate)) {
+        int currentYear = java.time.LocalDate.now().getYear();
+        if (student.getBirthDate() == null
+                || student.getBirthDate().isAfter(currentDate)
+                || (currentYear - student.getBirthDate().getYear() > 100) ){
             return false;
         }
         //Verify if the student has a valid school type
-        if (!(student.getSchoolType() == 0 || student.getSchoolType() == 1 || student.getSchoolType() == 2)) {
+        if (!(student.getSchoolType() == 0
+                || student.getSchoolType() == 1
+                || student.getSchoolType() == 2)  ){
             return false;
         }
         //Verify if the student has a valid graduation year
-        int currentYear = java.time.LocalDate.now().getYear();
-        if (student.getGraduationYear() < 1900 || student.getGraduationYear() > currentYear) {
+
+        if (student.getGraduationYear() < 1900
+                || (student.getGraduationYear() > currentYear) ){
             return false;
         }
         return true;

@@ -129,7 +129,7 @@ class AdministrationOfficeTest {
         //Setting up the student
         student.setRut("20.000.000-2");
         student.setFirstName("Armando");
-        student.setLastName("Casas");
+        student.setLastName("Mesas");
         student.setBirthDate(LocalDate.of(1990, 1, 1));
         student.setSchoolType(2);
         student.setGraduationYear(2023);
@@ -145,7 +145,7 @@ class AdministrationOfficeTest {
         //Setting up the student
         student.setRut("20.000.000-2");
         student.setFirstName("Armando");
-        student.setLastName("Casas");
+        student.setLastName("Mesas");
         student.setBirthDate(LocalDate.of(1990, 1, 1));
         student.setSchoolType(1);
         student.setGraduationYear(2021);

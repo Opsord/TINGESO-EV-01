@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>My Web App</title>
+  <title>TopEducation</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
@@ -19,14 +19,12 @@
     </thead>
     <tbody>
     <tr th:each="student : ${students}">
-      <td th:text="${student.id}">1</td>
-      <td th:text="${student.rut}">John</td>
+      <td th:text="${student.id}"></td>
+      <td th:text="${student.rut}"></td>
       <td th:text="${student.schoolName}">
       <td>
-        //Edit and Delete buttons
         <a class="btn btn-primary" href="#" role="button">Edit</a>
         <a class="btn btn-danger" href="#" role="button">Delete</a>
-        //Details button
         <a class="btn btn-success" href="#" role="button">Details</a>
       </td>
     </tr>

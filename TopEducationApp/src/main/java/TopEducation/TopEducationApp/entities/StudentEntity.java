@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
-//Part of the persistence layer
+// Part of the persistence layer
 public class StudentEntity {
 
     @Id
@@ -22,28 +22,28 @@ public class StudentEntity {
     @Column(unique = true, nullable = false)
     private Long id;
 
-    //RUT is a unique identifier for Chilean citizens
+    // RUT is a unique identifier for Chilean citizens
     private String rut;
 
-    //First name
+    // First name
     private String firstName;
 
-    //Last name
+    // Last name
     private String lastName;
 
-    //Birthdate
+    // Birthdate
     private LocalDate birthDate;
 
-    //School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
+    // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
     private int schoolType;
 
-    //School name
+    // School name
     private String schoolName;
 
-    //Year of graduation
+    // Year of graduation
     private int graduationYear;
 
-    //Average grade in tests
+    // Average grade in tests
     private double averageGrade;
 
 }

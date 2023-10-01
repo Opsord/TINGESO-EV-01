@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>File Manager</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #2e333bff;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .custom-file-upload {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-align: center;
+      }
+
+      .custom-file-upload:hover {
+        background-color: #0056b3;
+      }
+
+      button[type="submit"] {
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>File Manager</h1>
+      <form method="post" action="/upload" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="file">Select a file:</label>
+          <label class="custom-file-upload">
+            <input type="file" id="file" name="file" />
+            Browse...
+          </label>
+        </div>
+        <button type="submit">Upload</button>
+      </form>
+    </div>
+  </body>
+</html>

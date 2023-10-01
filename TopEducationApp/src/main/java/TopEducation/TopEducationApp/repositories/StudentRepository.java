@@ -8,27 +8,32 @@ import java.time.LocalDate;
 
 @Repository
 
-//Part of the persistence layer
+// Part of the persistence layer
 public interface StudentRepository extends CrudRepository<StudentEntity, Long> {
-    //Custom query's here
+    // Custom query's here
 
+    // FindBy methods
 
-    //FindBy methods
-
-    //Find by RUT
+    // Find by RUT
     StudentEntity findByRut(String rut);
-    //Find by first name
+
+    // Find by first name
     StudentEntity findByFirstName(String firstName);
-    //Find by last name
+
+    // Find by last name
     StudentEntity findByLastName(String lastName);
-    //Find by birthdate
+
+    // Find by birthdate
     StudentEntity findByBirthDate(LocalDate birthDate);
-    //Find by school type
-    //Type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
+
+    // Find by school type
+    // Type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
     StudentEntity findBySchoolType(int schoolType);
-    //Find by school name
+
+    // Find by school name
     StudentEntity findBySchoolName(String schoolName);
-    //Find by graduation year
+
+    // Find by graduation year
     StudentEntity findByGraduationYear(int graduationYear);
 
 }

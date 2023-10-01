@@ -1,6 +1,5 @@
 package TopEducation.TopEducationApp.controllers;
 
-
 import TopEducation.TopEducationApp.entities.StudentEntity;
 import TopEducation.TopEducationApp.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +13,16 @@ import java.util.ArrayList;
 @Controller
 @RequestMapping
 
-//Part of the presentation layer
+// Part of the presentation layer
 public class StudentController {
 
     @Autowired
     StudentService studentService;
 
-    @GetMapping("/students")
+    @GetMapping("/studentList")
     public String listStudents(Model model) {
         ArrayList<StudentEntity> students = studentService.getAllStudents();
         model.addAttribute("students", students);
-        return "studentsIndex";
+        return "studentList";
     }
 }

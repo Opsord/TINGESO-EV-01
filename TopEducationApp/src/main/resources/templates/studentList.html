@@ -18,13 +18,14 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 70vh;
-        margin: 0;
+        margin: 30;
         background: #2e333bff;
+        max-height: auto;
       }
 
       .container-sm {
-        max-width: 600px;
+        max-height: fit-content;
+        max-width: 800px;
         margin: 0 auto;
         padding: 20px;
         background-color: #fff;
@@ -40,7 +41,7 @@
       .btn-go-back {
         margin-top: 1rem;
       }
-
+      
       .table {
         margin-top: 1rem;
       }
@@ -67,6 +68,7 @@
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           <tr th:each="student : ${students}">
             <td th:text="${student.id}"></td>
@@ -85,6 +87,7 @@
             </td>
           </tr>
         </tbody>
+        
       </table>
     </div>
   </body>

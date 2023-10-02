@@ -33,8 +33,14 @@ public class FileManagerController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file) {
         try {
-            // Save the uploaded file to this folder
+            // Save the uploaded file to the database
             String result = fileManagerService.saveExcelData(file);
+
+            // Just for testing purposes
+            //System.out.println(file.getName());
+            //System.out.println(file.getContentType());
+            //System.out.println(file.getSize());
+
             return ResponseEntity.ok(result);
         } catch (IOException e) {
             // Handle the exception and return an error response

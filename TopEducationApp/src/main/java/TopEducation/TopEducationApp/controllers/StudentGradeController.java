@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -20,15 +21,22 @@ public class StudentGradeController {
 
     @GetMapping("/studentGradeList")
     public String listStudentGrades(Model model) {
-        ArrayList <StudentGradeEntity> studentGrades = studentGradeService.getAllStudentGrades();
+        ArrayList<StudentGradeEntity> studentGrades = studentGradeService.getAllStudentGrades();
         model.addAttribute("studentGrades", studentGrades);
         return "studentGradeList";
     }
 
     // Student creator page
-    @GetMapping("/studentGradeCreator")
+    @GetMapping("/scoreCreator")
     public String createStudentGrade() {
-        return "studentGradeCreator";
+        return "scoreCreator";
+    }
+
+    // Create a student and save it to the database
+    @PostMapping("/scoreCreator")
+    public String createStudentGrade(StudentGradeEntity studentGrade, Model model) {
+        studentGradeService.saveStudentGrade(studentGrade);
+        return "redirect:/studentGradeList";
     }
 
     @GetMapping("/studentGradeList/{id}/delete")

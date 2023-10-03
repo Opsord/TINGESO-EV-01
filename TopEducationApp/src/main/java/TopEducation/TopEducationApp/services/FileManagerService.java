@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Iterator;
 import java.util.Objects;
 
 @Service
@@ -46,10 +45,8 @@ public class FileManagerService {
                 Sheet sheet = workbook.getSheetAt(0);
 
                 // Getting the students from the Excel file
-                Iterator<Row> rowIterator = sheet.iterator();
 
-                while (rowIterator.hasNext()) {
-                    Row currentRow = rowIterator.next();
+                for (Row currentRow : sheet) {
                     if (currentRow.getRowNum() == 0) {
                         continue; // Skip header row
                     }
@@ -127,10 +124,8 @@ public class FileManagerService {
                     Sheet sheet = workbook.getSheetAt(i);
 
                     // Getting the students grades from the Excel file
-                    Iterator<Row> rowIterator = sheet.iterator();
 
-                    while (rowIterator.hasNext()) {
-                        Row currentRow = rowIterator.next();
+                    for (Row currentRow : sheet) {
                         if (currentRow.getRowNum() == 0) {
                             continue; // Skip header row
                         }
@@ -180,4 +175,6 @@ public class FileManagerService {
         }
         return "File uploaded successfully";
     }
+
+
 }

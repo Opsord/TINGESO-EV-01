@@ -31,20 +31,16 @@ public class FileManagerController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadExcelFile(@RequestParam("file") MultipartFile file) {
+    public String uploadExcelFile(@RequestParam("file") MultipartFile file) {
         try {
             // Save the uploaded file to the database
-            String result = fileManagerService.saveExcelData(file);
-
-            // Just for testing purposes
-            //System.out.println(file.getName());
-            //System.out.println(file.getContentType());
-            //System.out.println(file.getSize());
-
-            return ResponseEntity.ok(result);
+            String result = fileManagerService.saveExcelDataStudent(file);
+            String result2 = fileManagerService.saveExcelDataStudentGrade(file);
+            // Redirect to the students list page
+            return "redirect:/studentList";
         } catch (IOException e) {
             // Handle the exception and return an error response
-            return ResponseEntity.status(500).body("Error uploading file");
+            return "redirect:/fileManager";
         }
     }
 

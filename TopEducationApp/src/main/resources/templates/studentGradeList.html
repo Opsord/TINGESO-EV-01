@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords" content="TopEducation, Students, List" />
+  <meta name="description" content="Page for consulting the student list" />
+  <title>TopEducation Scores</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+          crossorigin="anonymous"
+  />
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 30px;
+      background: #2e333bff;
+      max-height: auto;
+    }
+
+    .container-sm {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      text-align: center;
+    }
+
+    .btn-goBack,
+    .btn-addNew {
+      margin-top: 20px;
+    }
+
+    .btn-addNew {
+      margin-right: 20px;
+      background-color: #187720;
+    }
+
+    .btn-action {
+      margin-right: 5px;
+    }
+
+    .btn-delete {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      background-color: #9c1a11;
+    }
+
+    .table {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+<div class="container-sm">
+  <h1>Students Scores</h1>
+  <div class="text-start">
+    <a class="btn btn-primary btn-goBack" href="/" role="button">Go Back</a>
+    <a class="btn btn-primary btn-addNew" href="#" role="button">Add Score</a>
+  </div>
+  <table class="table">
+    <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>RUT</th>
+      <th>Score</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="studentGrade : ${studentGrades}">
+      <td th:text="${studentGrade.id}"></td>
+      <td th:text="${studentGrade.gradeRUT}"></td>
+      <td th:text="${studentGrade.score}"></td>
+      <td>
+        <a class="btn btn-primary btn-action" href="#" role="button">Edit</a>
+        <a class="btn btn-danger btn-action" href="#" role="button" th:href="@{/studentGradeList/{id}/delete(id=${studentGrade.id})}">Delete</a>
+        <a class="btn btn-success btn-action" href="#" role="button">Details</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="text-end">
+    <a class="btn btn-danger btn-delete" href="#" role="button" th:href="@{/studentGradeList/deleteAll}">Clean database</a>
+  </div>
+</div>
+</body>
+</html>

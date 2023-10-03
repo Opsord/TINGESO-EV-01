@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -19,10 +20,39 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    // Get all students from the database
     @GetMapping("/studentList")
     public String listStudents(Model model) {
         ArrayList<StudentEntity> students = studentService.getAllStudents();
         model.addAttribute("students", students);
         return "studentList";
     }
+
+    // Student creator page
+    @GetMapping("/studentCreator")
+    public String createStudent(Model model) {
+        return "studentCreator";
+    }
+
+    // Create a student and save it to the database
+    @PostMapping("/studentCreator")
+    public String createStudent(StudentEntity student, Model model) {
+        studentService.saveStudent(student);
+        return "redirect:/studentList";
+    }
+
+    // Delete a student from the database
+    @GetMapping("/studentList/{id}/delete")
+    public String deleteStudent(StudentEntity student, Model model) {
+        studentService.deleteStudent(student.getId());
+        return "redirect:/studentList";
+    }
+
+    // Delete all students from the database
+    @GetMapping("/studentList/deleteAll")
+    public String deleteAllStudents(Model model) {
+        studentService.deleteAllStudents();
+        return "redirect:/studentList";
+    }
+
 }

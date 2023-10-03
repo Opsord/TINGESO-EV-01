@@ -1,5 +1,7 @@
 package TopEducation.TopEducationApp.services;
 
+import TopEducation.TopEducationApp.entities.StudentGradeEntity;
+import TopEducation.TopEducationApp.repositories.StudentGradeRepository;
 import lombok.Generated;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Iterator;
+import java.util.Objects;
 
 @Service
 
@@ -24,23 +27,20 @@ import java.util.Iterator;
 public class FileManagerService {
 
     @Autowired
+    private AdministrationOffice administrationOffice;
+
+    @Autowired
     private StudentRepository studentRepository;
 
     @Autowired
-    private AdministrationOffice administrationOffice;
+    private StudentGradeRepository studentGradeRepository;
 
-    // Method to save the data from an Excel file to the database
+    // Method to save the data from an Excel with the students information
     @Generated
-    public String saveExcelData(MultipartFile file) throws IOException {
-
-        // Just for testing purposes
-        System.out.println("Here is before the if block");
+    public String saveExcelDataStudent(MultipartFile file) throws IOException {
 
         // Verify if the Excel file is xlsx type
-        if (file.getOriginalFilename().endsWith(".xlsx")) {
-
-            // Just for testing purposes
-            System.out.println("Here is before the try block");
+        if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xlsx")) {
 
             try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
                 Sheet sheet = workbook.getSheetAt(0);
@@ -48,53 +48,45 @@ public class FileManagerService {
                 // Getting the students from the Excel file
                 Iterator<Row> rowIterator = sheet.iterator();
 
-                // Just for testing purposes
-                System.out.println("Here is before the while loop");
-
                 while (rowIterator.hasNext()) {
                     Row currentRow = rowIterator.next();
                     if (currentRow.getRowNum() == 0) {
                         continue; // Skip header row
                     }
 
-                    // Just for testing purposes
-                    System.out.println("Here is before getting the student values");
-
                     // Getting the student values from the Excel file
                     // Just for testing purposes (the values are printed in the console)
 
                     String rut = currentRow.getCell(1).getStringCellValue();
-                    System.out.println(rut);
+                    //System.out.println(rut);
 
                     String firstName = currentRow.getCell(2).getStringCellValue();
-                    System.out.println(firstName);
+                    //System.out.println(firstName);
 
                     String lastName = currentRow.getCell(3).getStringCellValue();
-                    System.out.println(lastName);
+                    //System.out.println(lastName);
 
                     // Date format is dd-mm-yyyy
                     // The date is converted to LocalDate format
                     LocalDate birthDate = currentRow.getCell(4).getLocalDateTimeCellValue().toLocalDate();
-                    System.out.println(birthDate);
+                    //System.out.println(birthDate);
 
                     String schoolName = currentRow.getCell(5).getStringCellValue();
-                    System.out.println(schoolName);
+                    //System.out.println(schoolName);
 
                     String schoolType = currentRow.getCell(6).getStringCellValue();
                     // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
                     int schoolTypeInt = 0;
                     switch (schoolType) {
-                        case "Municipal" -> {}
+                        case "Municipal" -> {
+                        }
                         case "Subvencionado" -> schoolTypeInt = 1;
                         case "Particular" -> schoolTypeInt = 2;
                     }
-                    System.out.println(schoolType);
+                    //System.out.println(schoolType);
 
                     int graduationYear = (int) currentRow.getCell(7).getNumericCellValue();
-                    System.out.println(graduationYear);
-
-                    // Just for testing purposes
-                    System.out.println("Here is before the creation of the student object");
+                    //System.out.println(graduationYear);
 
                     // Create a new student object
                     StudentEntity student = new StudentEntity();
@@ -106,14 +98,80 @@ public class FileManagerService {
                     student.setSchoolName(schoolName);
                     student.setGraduationYear(graduationYear);
 
-                    studentRepository.save(student);
-
-                    // Just for testing purposes
-                    System.out.println("Here a student was saved");
-
                     // Verify if the student is valid before saving it to the database
+                    if (administrationOffice.isValidStudent(student)) {
+                        // Save the student to the database
+                        studentRepository.save(student);
+                    }
 
                 }
+            } catch (Exception e) {
+                // Handle exception
+            }
+        } else {
+            return "Uploaded file is not an Excel file";
+        }
+        return "File uploaded successfully";
+    }
+
+    // Method to save the data from an Excel with the students grades information
+    @Generated
+    public String saveExcelDataStudentGrade(MultipartFile file) throws IOException {
+
+        // Verify if the Excel file is xlsx type
+        if (Objects.requireNonNull(file.getOriginalFilename()).endsWith(".xlsx")) {
+
+            try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
+                // Getting all other sheets than the first one
+                for (int i = 1; i < workbook.getNumberOfSheets(); i++) {
+                    Sheet sheet = workbook.getSheetAt(i);
+
+                    // Getting the students grades from the Excel file
+                    Iterator<Row> rowIterator = sheet.iterator();
+
+                    while (rowIterator.hasNext()) {
+                        Row currentRow = rowIterator.next();
+                        if (currentRow.getRowNum() == 0) {
+                            continue; // Skip header row
+                        }
+
+                        // Getting the student grades values from the Excel file
+                        // Just for testing purposes (the values are printed in the console)
+
+                        String gradeRUT = currentRow.getCell(1).getStringCellValue();
+                        //System.out.println(gradeRUT);
+
+                        int score = (int) currentRow.getCell(2).getNumericCellValue();
+                        //System.out.println(score);
+
+                        // Date format is dd-mm-yyyy
+                        // The date is converted to LocalDate format
+                        LocalDate examDate = currentRow.getCell(3).getLocalDateTimeCellValue().toLocalDate();
+                        //System.out.println(examDate);
+
+                        String studentName = currentRow.getCell(4).getStringCellValue();
+                        //System.out.println(studentName);
+
+                        String studentLastName = currentRow.getCell(5).getStringCellValue();
+                        //System.out.println(studentLastName);
+
+                        // Create a new student grade object
+                        StudentGradeEntity studentGrade = new StudentGradeEntity();
+                        studentGrade.setGradeRUT(gradeRUT);
+                        studentGrade.setScore(score);
+                        studentGrade.setExamDate(examDate);
+                        studentGrade.setStudentName(studentName);
+                        studentGrade.setStudentLastName(studentLastName);
+
+                        // Verify if the student grade is valid before saving it to the database
+                        if (administrationOffice.isValidStudentGrade(studentGrade)) {
+                            // Save the student grade to the database
+                            studentGradeRepository.save(studentGrade);
+                        }
+
+                    }
+                }
+
             } catch (Exception e) {
                 // Handle exception
             }

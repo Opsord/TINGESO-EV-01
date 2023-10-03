@@ -1,6 +1,7 @@
 package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.StudentEntity;
+import TopEducation.TopEducationApp.entities.StudentGradeEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -47,6 +48,39 @@ public class AdministrationOffice {
 
         if (student.getGraduationYear() < 1900
                 || (student.getGraduationYear() > currentYear) ){
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isValidStudentGrade(StudentGradeEntity studentGrade) {
+        //Verify if the student´s parameters are valid
+
+        //Verify if the student has a valid rut
+        if (studentGrade.getGradeRUT() == null
+                || studentGrade.getGradeRUT().isBlank() ){
+            return false;
+        }
+        //Verify if the student has a valid score
+        if (studentGrade.getScore() < 0
+                || studentGrade.getScore() > 1000 ){
+            return false;
+        }
+        //Verify if the exam date is from this year
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = java.time.LocalDate.now().getYear();
+        if (studentGrade.getExamDate() == null
+                || (studentGrade.getExamDate().isAfter(currentDate)) ){
+            return false;
+        }
+        //Verify if the student name is valid
+        if (studentGrade.getStudentName() == null
+                || studentGrade.getStudentName().isBlank() ){
+            return false;
+        }
+        //Verify if the student last name is valid
+        if (studentGrade.getStudentLastName() == null
+                || studentGrade.getStudentLastName().isBlank() ){
             return false;
         }
         return true;

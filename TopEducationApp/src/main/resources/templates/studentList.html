@@ -25,7 +25,7 @@
 
       .container-sm {
         max-height: fit-content;
-        max-width: 800px;
+        max-width: 1000px;
         margin: auto;
         padding: 20px;
         background-color: #fff;
@@ -90,6 +90,7 @@
             <th>ID</th>
             <th>RUT</th>
             <th>School</th>
+            <th>Average Grade</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -99,6 +100,7 @@
             <td th:text="${student.id}"></td>
             <td th:text="${student.rut}"></td>
             <td th:text="${student.schoolName}"></td>
+            <td th:text="${student.averageGrade}"></td>
             <td>
               <a class="btn btn-primary btn-action" href="#" role="button"
                 >Edit</a

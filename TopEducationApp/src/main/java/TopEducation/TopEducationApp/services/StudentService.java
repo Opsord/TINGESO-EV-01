@@ -1,6 +1,7 @@
 package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.StudentEntity;
+import TopEducation.TopEducationApp.entities.StudentScoreEntity;
 import TopEducation.TopEducationApp.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class StudentService {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    StudentGradeService studentGradeService;
 
     // Get all the students
     public ArrayList<StudentEntity> getAllStudents() {
@@ -78,6 +82,20 @@ public class StudentService {
     // Find by graduation year
     public StudentEntity findByGraduationYear(int graduationYear) {
         return studentRepository.findByGraduationYear(graduationYear);
+    }
+
+    // Calculate the average score of a student
+    public int calculateAverageScore(StudentEntity student) {
+        // Get all the student grades
+        ArrayList<StudentScoreEntity> scores = studentGradeService.getAllStudentGrades();
+        // Calculate the average score
+        int averageScore = 0;
+        int numberOfScores = 0;
+        for (StudentScoreEntity score : scores) {
+            averageScore = averageScore + score.getScore();
+            numberOfScores++;
+        }
+        return (averageScore/numberOfScores);
     }
 
 }

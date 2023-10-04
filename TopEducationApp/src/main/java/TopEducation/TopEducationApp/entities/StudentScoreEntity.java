@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 
 // Part of the persistence layer
-public class StudentGradeEntity {
+public class StudentScoreEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

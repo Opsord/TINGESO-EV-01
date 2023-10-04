@@ -2,7 +2,6 @@ package TopEducation.TopEducationApp.controllers;
 
 import TopEducation.TopEducationApp.services.FileManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,9 +32,12 @@ public class FileManagerController {
     @PostMapping("/upload")
     public String uploadExcelFile(@RequestParam("file") MultipartFile file) {
         try {
-            // Save the uploaded file to the database
-            String result = fileManagerService.saveExcelDataStudent(file);
-            String result2 = fileManagerService.saveExcelDataStudentGrade(file);
+            // Save the Excel file data to the database
+            fileManagerService.saveExcelDataStudentGrade(file);
+            fileManagerService.saveExcelDataStudent(file);
+
+            // Update the students info
+            fileManagerService.updateStudentsInfo();
             // Redirect to the students list page
             return "redirect:/studentList";
         } catch (IOException e) {

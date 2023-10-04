@@ -98,4 +98,21 @@ public class StudentService {
         return (averageScore/numberOfScores);
     }
 
+    // Calculate discount by average score
+    public double calculateDiscountByAverageScore(StudentEntity student) {
+        // Get the average score
+        int averageScore = student.getAverageGrade();
+        // Calculate the discount
+        double discount = 0;
+        if (averageScore < 850) {
+            discount = 0;
+        } else if (averageScore < 899) {
+            discount = 0.02;
+        } else if (900  <= averageScore && averageScore < 949) {
+            discount = 0.05;
+        } else if (averageScore >= 950) {
+            discount = 0.1;
+        }
+        return discount;
+    }
 }

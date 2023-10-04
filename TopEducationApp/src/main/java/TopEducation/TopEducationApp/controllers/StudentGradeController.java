@@ -50,4 +50,5 @@ public class StudentGradeController {
         studentGradeService.deleteAllStudentGrades();
         return "redirect:/studentGradeList";
     }
+
 }

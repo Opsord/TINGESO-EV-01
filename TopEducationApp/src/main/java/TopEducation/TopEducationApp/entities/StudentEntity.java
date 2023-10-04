@@ -43,6 +43,6 @@ public class StudentEntity {
     private int graduationYear;
 
     // Average grade in tests
-    private double averageGrade;
+    private int averageGrade;
 
 }

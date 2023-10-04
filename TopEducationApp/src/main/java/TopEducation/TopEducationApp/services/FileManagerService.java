@@ -173,6 +173,7 @@ public class FileManagerService {
         }
     }
 
+    @Generated
     public void updateStudentsInfo(){
         // Get all the students
         Iterable<StudentEntity> students = studentService.getAllStudents();

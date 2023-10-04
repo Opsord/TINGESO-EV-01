@@ -16,17 +16,12 @@ import java.io.IOException;
 
 public class FileManagerController {
 
-    @GetMapping("/fileManager")
-    public String fileUploadForm() {
-        return "fileManager";
-    }
-
     @Autowired
     FileManagerService fileManagerService;
 
-    @Autowired
-    public void FileController(FileManagerService fileManagerService) {
-        this.fileManagerService = fileManagerService;
+    @GetMapping("/fileManager")
+    public String fileUploadForm() {
+        return "fileManager";
     }
 
     @PostMapping("/upload")
@@ -35,7 +30,6 @@ public class FileManagerController {
             // Save the Excel file data to the database
             fileManagerService.saveExcelDataStudentGrade(file);
             fileManagerService.saveExcelDataStudent(file);
-
             // Update the students info
             fileManagerService.updateStudentsInfo();
             // Redirect to the students list page
@@ -45,5 +39,4 @@ public class FileManagerController {
             return "redirect:/fileManager";
         }
     }
-
 }

@@ -64,4 +64,9 @@ public class InstallmentService {
         return (ArrayList<InstallmentEntity>) installmentRepository.findAllInstallmentsByRUT(installmentRUT);
     }
 
+    // Find all paid installments by student RUT
+    public ArrayList<InstallmentEntity> findAllPaidInstallmentsByRUT(String installmentRUT) {
+        return (ArrayList<InstallmentEntity>) installmentRepository.findAllPaidInstallmentsByRUT(installmentRUT);
+    }
+
 }

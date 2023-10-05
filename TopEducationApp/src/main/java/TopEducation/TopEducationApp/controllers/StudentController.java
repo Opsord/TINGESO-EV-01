@@ -68,11 +68,14 @@ public class StudentController {
     // Student detail page
     @GetMapping("/studentList/{id}/details")
     public String showStudentDetails(@PathVariable Long id, Model model) {
+        // Get student by id
         StudentEntity student = studentService.findById(id);
         administrationOffice.updateStudentInstallments(student);
         model.addAttribute("student", student);
+        // Get installments by student RUT
         ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
         model.addAttribute("installments", installments);
+        // Get the total amount to pay
         return "studentDetails";
     }
 

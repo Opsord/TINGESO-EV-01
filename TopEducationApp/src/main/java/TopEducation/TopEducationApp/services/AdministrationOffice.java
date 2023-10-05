@@ -94,7 +94,7 @@ public class AdministrationOffice {
                 || studentScore.getStudentName().isBlank()) {
             return false;
         }
-        // Verify if the student last name is valid
+        // Verify if the student lastname is valid
         if (studentScore.getStudentLastName() == null
                 || studentScore.getStudentLastName().isBlank()) {
             return false;
@@ -106,7 +106,7 @@ public class AdministrationOffice {
 
     // Calculate the maximum number of installments
     public int calculateMaxInstallments(StudentEntity student) {
-        // Getting the type of school of the student
+        // Getting the school type of the student
         int schoolType = student.getSchoolType();
         int maxInstallments = 0;
         // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
@@ -117,7 +117,7 @@ public class AdministrationOffice {
         } else if (schoolType == 2) {
             maxInstallments = 4;
         }
-        // Adding a validation to avoid fraud
+        // Adding a validation to avoid trouble
         if (isValidStudent(student)) {
             return maxInstallments;
         } else {
@@ -128,7 +128,7 @@ public class AdministrationOffice {
     // Calculate the annual cost if the payment is made in cash
     public double calculateAnnualCostCash(StudentEntity student) {
         double finalPrice = (enrollmentCost + annualDuty) * 0.5;
-        // Adding a validation to avoid fraud
+        // Adding a validation to avoid trouble
         if (isValidStudent(student)) {
             return finalPrice;
         } else {
@@ -157,13 +157,13 @@ public class AdministrationOffice {
         LocalDate currentYear = LocalDate.now();
         // Calculating how many years have passed since the student graduated
         int yearsSinceGraduation = currentYear.getYear() - student.getGraduationYear();
-        // First range: 0 - 1 year
+        // First range: 0-1 year
         if (yearsSinceGraduation < 1) {
             return 0.15;
-            // Second range: 1 - 2 years
+            // Second range: 1-2 years
         } else if (yearsSinceGraduation < 3) {
             return 0.08;
-            // Third range: 3 - 4 years
+            // Third range: 3-4 years
         } else if (yearsSinceGraduation < 5) {
             return 0.04;
             // Fourth range: 5+ years
@@ -201,9 +201,35 @@ public class AdministrationOffice {
         double averageScoreDis = calculateAverageScoreDiscount(student);
         // Calculating the final price
         double finalPrice = annualCost * (1 - schoolTypeDis - timeAfterGraduationDis - averageScoreDis);
-        // Adding a validation to avoid fraud
+        // Adding a validation to avoid trouble
         if (isValidStudent(student)) {
             return finalPrice;
+        } else {
+            return 0;
+        }
+    }
+
+    // Calculate the total amount to pay depending on if the payment is made in cash or installments
+    public int calculateFinalCost(StudentEntity student) {
+        if (student.getAgreedInstallments() == 1) {
+            return (int) calculateAnnualCostCash(student);
+        } else {
+            return (int) calculateAnnualCostInstallments(student);
+        }
+    }
+
+    // Calculate the amount paid in installments
+    public int calculateCurrentDebt(StudentEntity student) {
+        // Get an array of the paid installments that match the RUT of the student
+        ArrayList<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT(student.getRut());
+        // Get the total amount paid
+        int totalAmountPaid = 0;
+        for (InstallmentEntity installment : paidInstallments) {
+            totalAmountPaid += installment.getInstallmentAmount();
+        }
+        // Adding a validation to avoid trouble
+        if (isValidStudent(student)) {
+            return totalAmountPaid;
         } else {
             return 0;
         }
@@ -223,17 +249,17 @@ public class AdministrationOffice {
         }
         // Get an array of the installments that match the RUT of the student
         ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
-        // Verify if the number of installments agreed by the student are generated
-        int missingInstallments = maxInstallments - installments.size();
+        // Calculate the number of installments that are missing
+        int missingInstallments = agreedInstallments - installments.size();
+        // Verify if there are missing installments
         if (missingInstallments > 0) {
             // Generate the missing installments
             for (int i = 0; i < missingInstallments; i++) {
                 // Create a new installment
                 InstallmentEntity installment = new InstallmentEntity();
-                // Set the RUT of the student
                 installment.setInstallmentRUT(student.getRut());
                 // Set the amount of the installment
-                installment.setInstallmentAmount((int) calculateAnnualCostInstallments(student) / maxInstallments);
+                installment.setInstallmentAmount((int) calculateFinalCost(student) / agreedInstallments);
                 // Set the payment date of the installment
                 installment.setInstallmentPaymentDate(LocalDate.now().plusMonths(i));
                 // Set the status - Installment status: 0 -> Pending, 1 -> Paid
@@ -242,6 +268,7 @@ public class AdministrationOffice {
                 installmentService.saveInstallment(installment);
             }
         }
-
+        // Update the total amount paid
+        student.setTotalAmountPaid(calculateCurrentDebt(student));
     }
 }

@@ -76,17 +76,30 @@
     </div>
 
     <div class="details">
-        <p class="details-label">Student ID:</p>
-        <p th:text="${student.id}"></p>
-
         <p class="details-label">RUT:</p>
         <p th:text="${student.rut}"></p>
+
+        <p class="details-label">Full name:</p>
+        <p th:text="${student.firstName + ' ' + student.lastName}"></p>
 
         <p class="details-label">School:</p>
         <p th:text="${student.schoolName}"></p>
 
+        <p class="details-label">Exams taken:</p>
+        <p th:text="${student.examsTaken}"></p>
+
         <p class="details-label">Average Grade:</p>
         <p th:text="${student.averageGrade}"></p>
+
+        <p class="details-label">Agreed duty:</p>
+        <p th:text="${student.totalAmountToPay}"></p>
+
+        <p class="details-label">Total amount paid:</p>
+        <p th:text="${student.totalAmountPaid}"></p>
+
+        <p class="details-label">Agreed installments:</p>
+        <p th:text="${student.agreedInstallments}"></p>
+
     </div>
 
     <div class="installments">

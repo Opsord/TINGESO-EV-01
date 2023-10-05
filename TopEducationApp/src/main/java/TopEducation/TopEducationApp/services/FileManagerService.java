@@ -126,7 +126,7 @@ public class FileManagerService {
                 for (int i = 1; i < workbook.getNumberOfSheets(); i++) {
                     Sheet sheet = workbook.getSheetAt(i);
 
-                    // Getting the students grades from the Excel file
+                    // Getting the student's grades from the Excel file
 
                     for (Row currentRow : sheet) {
                         if (currentRow.getRowNum() == 0) {
@@ -198,8 +198,9 @@ public class FileManagerService {
 
             // Update the student info
             student.setAverageGrade(averageScore);
-
             student.setExamsTaken(count);
+            student.setTotalAmountToPay(administrationOffice.calculateFinalCost(student));
+            student.setTotalAmountPaid(0);
 
             // Update installments info
             administrationOffice.updateStudentInstallments(student);

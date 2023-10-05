@@ -19,6 +19,11 @@ public interface InstallmentRepository extends CrudRepository<InstallmentEntity,
     @Query("SELECT e FROM InstallmentEntity e WHERE e.installmentRUT = :installmentRUT")
     ArrayList<InstallmentEntity> findAllInstallmentsByRUT(@Param("installmentRUT") String installmentRUT);
 
+    // Custom query to find all paid installments for a given student and
+    // save them in a list
+    @Query("SELECT e FROM InstallmentEntity e WHERE e.installmentRUT = :installmentRUT AND e.installmentStatus = 1")
+    ArrayList<InstallmentEntity> findAllPaidInstallmentsByRUT(@Param("installmentRUT") String installmentRUT);
+
     // FindBy methods
 
     // Find by installment RUT

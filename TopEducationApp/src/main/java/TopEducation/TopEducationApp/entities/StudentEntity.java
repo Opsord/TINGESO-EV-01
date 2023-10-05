@@ -50,4 +50,10 @@ public class StudentEntity {
 
     // Number of agreed installments
     private int agreedInstallments;
+
+    // Total amount to pay
+    private int totalAmountToPay;
+
+    // Total amount paid
+    private int totalAmountPaid;
 }

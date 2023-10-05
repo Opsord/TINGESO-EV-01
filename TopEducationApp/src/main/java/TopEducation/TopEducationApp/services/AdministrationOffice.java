@@ -18,17 +18,12 @@ public class AdministrationOffice {
     @Autowired
     private InstallmentService installmentService;
 
-    @Autowired
-    private StudentService studentService;
-
-
     // Constants
 
     // Enrollment cost -> 70.000 CLP
     private final int enrollmentCost = 70000;
     // Annual duty -> 1.500.000 CLP
     private final int annualDuty = 1500000;
-
 
     // Verifications
 
@@ -107,7 +102,6 @@ public class AdministrationOffice {
         return true;
     }
 
-
     // Pre-enrollment calculations
 
     // Calculate the maximum number of installments
@@ -142,13 +136,10 @@ public class AdministrationOffice {
         }
     }
 
-
     // Discount calculations
 
     // Calculate the discount depending on the type of school
     public double calculateSchoolTypeDiscount(StudentEntity student) {
-        // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
-        double schoolTypeDiscount = 0;
         if (student.getSchoolType() == 0) {
             return 0.2;
         } else if (student.getSchoolType() == 1) {
@@ -217,7 +208,6 @@ public class AdministrationOffice {
             return 0;
         }
     }
-
 
     // Enrollment
 

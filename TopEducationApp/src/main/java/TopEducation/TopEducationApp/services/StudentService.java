@@ -48,6 +48,11 @@ public class StudentService {
 
     // Find by methods
 
+    // Find by ID
+    public StudentEntity findById(Long id) {
+        return studentRepository.findById(id).orElse(null);
+    }
+
     // Find by RUT
     public StudentEntity findByRut(String rut) {
         return studentRepository.findByRut(rut);
@@ -95,7 +100,7 @@ public class StudentService {
             averageScore = averageScore + score.getScore();
             numberOfScores++;
         }
-        return (averageScore/numberOfScores);
+        return (averageScore / numberOfScores);
     }
 
     // Calculate discount by average score
@@ -108,7 +113,7 @@ public class StudentService {
             discount = 0;
         } else if (averageScore < 899) {
             discount = 0.02;
-        } else if (900  <= averageScore && averageScore < 949) {
+        } else if (900 <= averageScore && averageScore < 949) {
             discount = 0.05;
         } else if (averageScore >= 950) {
             discount = 0.1;

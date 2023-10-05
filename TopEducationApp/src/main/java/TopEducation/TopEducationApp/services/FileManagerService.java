@@ -1,7 +1,7 @@
 package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.StudentScoreEntity;
-import TopEducation.TopEducationApp.repositories.StudentGradeRepository;
+import TopEducation.TopEducationApp.repositories.StudentScoreRepository;
 import lombok.Generated;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,7 +32,7 @@ public class FileManagerService {
     private StudentRepository studentRepository;
 
     @Autowired
-    private StudentGradeRepository studentGradeRepository;
+    private StudentScoreRepository studentScoreRepository;
 
     @Autowired
     private StudentService studentService;
@@ -88,6 +88,8 @@ public class FileManagerService {
                     int graduationYear = (int) currentRow.getCell(7).getNumericCellValue();
                     // System.out.println(graduationYear);
 
+                    int agreedInstallments = (int) currentRow.getCell(8).getNumericCellValue();
+
                     // Create a new student object
                     StudentEntity student = new StudentEntity();
                     student.setRut(rut);
@@ -97,6 +99,7 @@ public class FileManagerService {
                     student.setSchoolType(schoolTypeInt);
                     student.setSchoolName(schoolName);
                     student.setGraduationYear(graduationYear);
+                    student.setAgreedInstallments(agreedInstallments);
 
                     // Verify if the student is valid before saving it to the database
                     if (administrationOffice.isValidStudent(student)) {
@@ -161,7 +164,7 @@ public class FileManagerService {
                         // Verify if the student grade is valid before saving it to the database
                         if (administrationOffice.isValidStudentGrade(studentGrade)) {
                             // Save the student grade to the database
-                            studentGradeRepository.save(studentGrade);
+                            studentScoreRepository.save(studentGrade);
                         }
 
                     }
@@ -174,26 +177,32 @@ public class FileManagerService {
     }
 
     @Generated
-    public void updateStudentsInfo(){
+    public void updateStudentsInfo() {
         // Get all the students
         Iterable<StudentEntity> students = studentService.getAllStudents();
 
         // For each student, update the student info
         for (StudentEntity student : students) {
             // Get the student grades
-            Iterable<StudentScoreEntity> studentGrades = studentGradeRepository.findAllGradesByStudentRUT(student.getRut());
+            Iterable<StudentScoreEntity> studentGrades = studentScoreRepository
+                    .findAllGradesByStudentRUT(student.getRut());
 
             // Calculate the average score
-            double averageScore = 0;
+            int averageScore = 0;
             int count = 0;
             for (StudentScoreEntity studentGrade : studentGrades) {
                 averageScore += studentGrade.getScore();
                 count++;
             }
-            averageScore = (int)(averageScore/count);
+            averageScore = (int) (averageScore / count);
 
             // Update the student info
             student.setAverageGrade(averageScore);
+
+            student.setExamsTaken(count);
+
+            // Update installments info
+            administrationOffice.updateStudentInstallments(student);
 
             // Save the student to the database
             studentRepository.save(student);

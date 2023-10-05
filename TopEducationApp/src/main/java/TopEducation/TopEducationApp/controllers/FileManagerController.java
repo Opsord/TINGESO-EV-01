@@ -1,5 +1,6 @@
 package TopEducation.TopEducationApp.controllers;
 
+import TopEducation.TopEducationApp.services.AdministrationOffice;
 import TopEducation.TopEducationApp.services.FileManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,9 @@ public class FileManagerController {
 
     @Autowired
     FileManagerService fileManagerService;
+
+    @Autowired
+    AdministrationOffice administrationOffice;
 
     @GetMapping("/fileManager")
     public String fileUploadForm() {

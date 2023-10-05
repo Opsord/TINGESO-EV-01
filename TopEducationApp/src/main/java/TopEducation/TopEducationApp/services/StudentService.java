@@ -18,7 +18,7 @@ public class StudentService {
     StudentRepository studentRepository;
 
     @Autowired
-    StudentGradeService studentGradeService;
+    StudentScoreService studentScoreService;
 
     // Get all the students
     public ArrayList<StudentEntity> getAllStudents() {
@@ -87,7 +87,7 @@ public class StudentService {
     // Calculate the average score of a student
     public int calculateAverageScore(StudentEntity student) {
         // Get all the student grades
-        ArrayList<StudentScoreEntity> scores = studentGradeService.getAllStudentGrades();
+        ArrayList<StudentScoreEntity> scores = studentScoreService.getAllStudentGrades();
         // Calculate the average score
         int averageScore = 0;
         int numberOfScores = 0;

@@ -1,15 +1,28 @@
 package TopEducation.TopEducationApp.services;
 
+import TopEducation.TopEducationApp.entities.InstallmentEntity;
 import TopEducation.TopEducationApp.entities.StudentEntity;
 import TopEducation.TopEducationApp.entities.StudentScoreEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Service
 
 // Part of the business layer
 public class AdministrationOffice {
+
+    @Autowired
+    private InstallmentService installmentService;
+
+    // Enrollment cost -> 70.000 CLP
+    private final int enrollmentCost = 70000;
+    // Annual duty -> 1.500.000 CLP
+    private final int annualDuty = 1500000;
+    // Total cost -> 1.570.000 CLP
 
     // Verify is a student is valid
     public boolean isValidStudent(StudentEntity student) {
@@ -85,11 +98,26 @@ public class AdministrationOffice {
         return true;
     }
 
-    // Enrollment cost -> 70.000 CLP
-    private final int enrollmentCost = 70000;
-    // Annual duty -> 1.500.000 CLP
-    private final int annualDuty = 1500000;
-    // Total cost -> 1.570.000 CLP
+    // Calculate the maximum number of installments
+    public int calculateMaxInstallments(StudentEntity student) {
+        // Getting the type of school of the student
+        int schoolType = student.getSchoolType();
+        int maxInstallments = 0;
+        // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
+        if (schoolType == 0) {
+            maxInstallments = 10;
+        } else if (schoolType == 1) {
+            maxInstallments = 7;
+        } else if (schoolType == 2) {
+            maxInstallments = 4;
+        }
+        // Adding a validation to avoid fraud
+        if (isValidStudent(student)) {
+            return maxInstallments;
+        } else {
+            return 0;
+        }
+    }
 
     // Calculate the annual cost if the payment is made in cash
     public double calculateAnnualCostCash(StudentEntity student) {
@@ -106,6 +134,7 @@ public class AdministrationOffice {
     public double calculateAnnualCostInstallments(StudentEntity student) {
         // Calculate discount depending on the type of school
         double schoolTypeDiscount = 0;
+        double averageScoreDiscount = 0;
         // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
         if (student.getSchoolType() == 0) {
             schoolTypeDiscount = 0.2;
@@ -148,25 +177,37 @@ public class AdministrationOffice {
         }
     }
 
-    // Calculate the maximum number of installments
-    public int calculateMaxInstallments(StudentEntity student) {
-        // Getting the type of school of the student
-        int schoolType = student.getSchoolType();
-        int maxInstallments = 0;
-        // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
-        if (schoolType == 0) {
-            maxInstallments = 10;
-        } else if (schoolType == 1) {
-            maxInstallments = 7;
-        } else if (schoolType == 2) {
-            maxInstallments = 4;
+    // Update student installments
+    public void updateStudentInstallments(StudentEntity student) {
+        // Calculate the maximum number of installments
+        int maxInstallments = calculateMaxInstallments(student);
+        // Get the number of installments agreed by the student
+        int agreedInstallments = student.getAgreedInstallments();
+        // Verify if the number of installments agreed by the student is valid
+        if (agreedInstallments > maxInstallments) {
+            agreedInstallments = maxInstallments;
         }
-        // Adding a validation to avoid fraud
-        if (isValidStudent(student)) {
-            return maxInstallments;
-        } else {
-            return 0;
+        // Get an array of the installments that match the RUT of the student
+        ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+        // Verify if the number of installments agreed by the student are generated
+        int missingInstallments = maxInstallments - installments.size();
+        if (missingInstallments > 0) {
+            // Generate the missing installments
+            for (int i = 0; i < missingInstallments; i++) {
+                // Create a new installment
+                InstallmentEntity installment = new InstallmentEntity();
+                // Set the RUT of the student
+                installment.setInstallmentRUT(student.getRut());
+                // Set the amount of the installment
+                installment.setInstallmentAmount((int) calculateAnnualCostInstallments(student) / maxInstallments);
+                // Set the payment date of the installment
+                installment.setInstallmentPaymentDate(LocalDate.now().plusMonths(i));
+                // Set the status of the installment Installment status: 0 -> Pending, 1 -> Paid
+                installment.setInstallmentStatus(0);
+                // Save the installment
+                installmentService.saveInstallment(installment);
+            }
         }
-    }
 
+    }
 }

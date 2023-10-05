@@ -102,15 +102,9 @@
             <td th:text="${student.schoolName}"></td>
             <td th:text="${student.averageGrade}"></td>
             <td>
-              <a class="btn btn-primary btn-action" href="#" role="button"
-                >Edit</a
-              >
-              <a class="btn btn-danger btn-action" href="#" role="button" th:href="@{/studentList/{id}/delete(id=${student.id})}"
-                >Delete</a
-              >
-              <a class="btn btn-success btn-action" href="#" role="button"
-                >Details</a
-              >
+              <!-- <a class="btn btn-primary btn-action" href="#" role="button">Edit</a -->
+              <a class="btn btn-danger btn-action" href="#" role="button" th:href="@{/studentList/{id}/delete(id=${student.id})}">Delete</a>
+              <a class="btn btn-success btn-action" href="#" role="button">Details</a>
             </td>
           </tr>
         </tbody>

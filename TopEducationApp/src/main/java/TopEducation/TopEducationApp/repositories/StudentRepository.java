@@ -37,6 +37,6 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Long> {
     StudentEntity findByGraduationYear(int graduationYear);
 
     // Find by average score
-    StudentEntity findByAverageScore(int averageScore);
+    StudentEntity findByAverageGrade(int averageGrade);
 
 }

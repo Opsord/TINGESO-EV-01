@@ -42,7 +42,12 @@ public class StudentEntity {
     // Year of graduation
     private int graduationYear;
 
+    // Exams taken
+    private int examsTaken;
+
     // Average grade in tests
     private int averageGrade;
 
+    // Number of agreed installments
+    private int agreedInstallments;
 }

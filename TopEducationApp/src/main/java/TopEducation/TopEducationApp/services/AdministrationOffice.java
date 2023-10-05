@@ -18,13 +18,21 @@ public class AdministrationOffice {
     @Autowired
     private InstallmentService installmentService;
 
+    @Autowired
+    private StudentService studentService;
+
+
+    // Constants
+
     // Enrollment cost -> 70.000 CLP
     private final int enrollmentCost = 70000;
     // Annual duty -> 1.500.000 CLP
     private final int annualDuty = 1500000;
-    // Total cost -> 1.570.000 CLP
 
-    // Verify is a student is valid
+
+    // Verifications
+
+    // Verify if the student is valid
     public boolean isValidStudent(StudentEntity student) {
         // Verify if the student´s parameters are valid
 
@@ -66,37 +74,41 @@ public class AdministrationOffice {
         return true;
     }
 
-    public boolean isValidStudentGrade(StudentScoreEntity studentGrade) {
+    // Verify if the student score is valid
+    public boolean isValidStudentGrade(StudentScoreEntity studentScore) {
         // Verify if the student´s parameters are valid
 
         // Verify if the student has a valid rut
-        if (studentGrade.getGradeRUT() == null
-                || studentGrade.getGradeRUT().isBlank()) {
+        if (studentScore.getGradeRUT() == null
+                || studentScore.getGradeRUT().isBlank()) {
             return false;
         }
         // Verify if the student has a valid score
-        if (studentGrade.getScore() < 0
-                || studentGrade.getScore() > 1000) {
+        if (studentScore.getScore() < 0
+                || studentScore.getScore() > 1000) {
             return false;
         }
         // Verify if the exam date is from this year
         LocalDate currentDate = LocalDate.now();
-        if (studentGrade.getExamDate() == null
-                || (studentGrade.getExamDate().isAfter(currentDate))) {
+        if (studentScore.getExamDate() == null
+                || (studentScore.getExamDate().isAfter(currentDate))) {
             return false;
         }
         // Verify if the student name is valid
-        if (studentGrade.getStudentName() == null
-                || studentGrade.getStudentName().isBlank()) {
+        if (studentScore.getStudentName() == null
+                || studentScore.getStudentName().isBlank()) {
             return false;
         }
         // Verify if the student last name is valid
-        if (studentGrade.getStudentLastName() == null
-                || studentGrade.getStudentLastName().isBlank()) {
+        if (studentScore.getStudentLastName() == null
+                || studentScore.getStudentLastName().isBlank()) {
             return false;
         }
         return true;
     }
+
+
+    // Pre-enrollment calculations
 
     // Calculate the maximum number of installments
     public int calculateMaxInstallments(StudentEntity student) {
@@ -130,45 +142,74 @@ public class AdministrationOffice {
         }
     }
 
-    // Calculate the annual cost if the payment is made in installments
-    public double calculateAnnualCostInstallments(StudentEntity student) {
-        // Calculate discount depending on the type of school
-        double schoolTypeDiscount = 0;
-        double averageScoreDiscount = 0;
-        // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
-        if (student.getSchoolType() == 0) {
-            schoolTypeDiscount = 0.2;
-        } else if (student.getSchoolType() == 1) {
-            schoolTypeDiscount = 0.1;
-        } else if (student.getSchoolType() == 2) {
-            schoolTypeDiscount = 0;
-        }
 
-        // Calculate discount depending on the years since graduation
-        double yearsSinceGraduationDiscount;
+    // Discount calculations
+
+    // Calculate the discount depending on the type of school
+    public double calculateSchoolTypeDiscount(StudentEntity student) {
+        // School type: 0 -> Municipal, 1 -> Subsidized, 2 -> Private
+        double schoolTypeDiscount = 0;
+        if (student.getSchoolType() == 0) {
+            return 0.2;
+        } else if (student.getSchoolType() == 1) {
+            return 0.1;
+        } else if (student.getSchoolType() == 2) {
+            return 0;
+        } else {
+            return 0;
+        }
+    }
+
+    // Calculate the discount depending on the years since graduation
+    public double calculateTimeAfterGraduationDiscount(StudentEntity student) {
         // Getting the current date
         LocalDate currentYear = LocalDate.now();
         // Calculating how many years have passed since the student graduated
         int yearsSinceGraduation = currentYear.getYear() - student.getGraduationYear();
         // First range: 0 - 1 year
         if (yearsSinceGraduation < 1) {
-            yearsSinceGraduationDiscount = 0.15;
+            return 0.15;
             // Second range: 1 - 2 years
         } else if (yearsSinceGraduation < 3) {
-            yearsSinceGraduationDiscount = 0.08;
+            return 0.08;
             // Third range: 3 - 4 years
         } else if (yearsSinceGraduation < 5) {
-            yearsSinceGraduationDiscount = 0.04;
+            return 0.04;
             // Fourth range: 5+ years
         } else {
-            yearsSinceGraduationDiscount = 0;
+            return 0;
         }
+    }
 
-        // Calculate the total discount
-        double totalDiscount = schoolTypeDiscount + yearsSinceGraduationDiscount;
-        // Calculate the total cost
-        double finalPrice = ((enrollmentCost + annualDuty) * (1 - totalDiscount));
+    // Calculate the discount depending on the average score
+    public double calculateAverageScoreDiscount(StudentEntity student) {
+        // Getting the average score of the student
+        int averageScore = student.getAverageGrade();
+        // First range: 950 – 1000
+        if (averageScore >= 950) {
+            return 0.1;
+            // Second range: 900 – 949
+        } else if (averageScore >= 900) {
+            return 0.05;
+            // Third range: 850 – 899
+        } else if (averageScore >= 850) {
+            return 0.02;
+            // Fourth range: < 850
+        } else {
+            return 0;
+        }
+    }
 
+    // Calculate the annual cost if the payment is made in installments
+    public double calculateAnnualCostInstallments(StudentEntity student) {
+        // Getting the annual cost
+        int annualCost = enrollmentCost + annualDuty;
+        // Getting the discounts
+        double schoolTypeDis = calculateSchoolTypeDiscount(student);
+        double timeAfterGraduationDis = calculateTimeAfterGraduationDiscount(student);
+        double averageScoreDis = calculateAverageScoreDiscount(student);
+        // Calculating the final price
+        double finalPrice = annualCost * (1 - schoolTypeDis - timeAfterGraduationDis - averageScoreDis);
         // Adding a validation to avoid fraud
         if (isValidStudent(student)) {
             return finalPrice;
@@ -176,6 +217,9 @@ public class AdministrationOffice {
             return 0;
         }
     }
+
+
+    // Enrollment
 
     // Update student installments
     public void updateStudentInstallments(StudentEntity student) {
@@ -202,7 +246,7 @@ public class AdministrationOffice {
                 installment.setInstallmentAmount((int) calculateAnnualCostInstallments(student) / maxInstallments);
                 // Set the payment date of the installment
                 installment.setInstallmentPaymentDate(LocalDate.now().plusMonths(i));
-                // Set the status of the installment Installment status: 0 -> Pending, 1 -> Paid
+                // Set the status - Installment status: 0 -> Pending, 1 -> Paid
                 installment.setInstallmentStatus(0);
                 // Save the installment
                 installmentService.saveInstallment(installment);

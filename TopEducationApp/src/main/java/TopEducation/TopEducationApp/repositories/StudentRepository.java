@@ -36,7 +36,31 @@ public interface StudentRepository extends CrudRepository<StudentEntity, Long> {
     // Find by graduation year
     StudentEntity findByGraduationYear(int graduationYear);
 
+    // Find by exams taken
+    StudentEntity findByExamsTaken(int examsTaken);
+
     // Find by average score
     StudentEntity findByAverageGrade(int averageGrade);
+
+    // Find by payment method
+    StudentEntity findByPaymentMethod(String paymentMethod);
+
+    // Find by agreed installments
+    StudentEntity findByAgreedInstallments(int agreedInstallments);
+
+    // Find by installments paid
+    StudentEntity findByInstallmentsPaid(int installmentsPaid);
+
+    // Find by overdue installments
+    StudentEntity findByOverdueInstallments(int overdueInstallments);
+
+    // Find by last payment date
+    StudentEntity findByLastPaymentDate(LocalDate lastPaymentDate);
+
+    // Find by total amount to pay
+    StudentEntity findByTotalAmountToPay(int totalAmountToPay);
+
+    // Find by total amount paid
+    StudentEntity findByTotalAmountPaid(int totalAmountPaid);
 
 }

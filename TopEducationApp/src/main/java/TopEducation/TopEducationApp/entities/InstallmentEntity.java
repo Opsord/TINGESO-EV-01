@@ -33,4 +33,10 @@ public class InstallmentEntity {
     // Installment payment date
     private LocalDate installmentPaymentDate;
 
+    // Installment overdue status: 0 -> Not overdue, 1 -> Overdue
+    private int installmentOverdueStatus;
+
+    // Installment overdue price
+    private int installmentOverduePrice;
+
 }

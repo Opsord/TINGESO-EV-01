@@ -1,81 +1,90 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="keywords" content="TopEducation, Student details" />
     <meta name="description" content="Page for viewing student details" />
     <title>Student Details</title>
     <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
-            crossorigin="anonymous"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
     />
 
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 30px;
-            background: #2e333bff;
-        }
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 30px;
+        background: #2e333bff;
+      }
 
-        .container-sm {
-            max-height: fit-content;
-            max-width: 1000px;
-            margin: auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+      .container-sm-details {
+        margin-top: 2rem;
+        text-align: center;
+        columns: 3;
+        height: fit-content;
+        width: 1000px;
+        padding: 20px;
+        background-color: #fff;
+      }
 
-        h1 {
-            font-size: 2.5rem;
-            text-align: center;
-        }
+      .container-sm-installments {
+        max-height: fit-content;
+        width: 1000px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+      }
 
-        .btn-goBack {
-            margin-top: 20px;
-        }
+      .container-sm-top {
+        max-height: fit-content;
+        width: 1100px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: black;
+      }
 
-        .details {
-            margin-top: 1rem;
-        }
+      h1 {
+        font-size: 2.5rem;
+        text-align: center;
+      }
 
-        .details-label {
-            font-weight: bold;
-        }
+      .btn-goBack {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+      }
 
-        .installments {
-            margin-top: 2rem;
-        }
+      .details-label {
+        font-weight: bold;
+      }
 
-        .installments h2 {
-            font-size: 1.5rem;
-        }
+      .installments {
+        margin-top: 2rem;
+      }
 
-        .table {
-            margin-top: 1rem;
-        }
+      .table {
+        margin-top: 1rem;
+      }
     </style>
-</head>
-<body>
+  </head>
 
-<div class="container-sm">
-    <h1>Student Details</h1>
+  <body>
+    <div class="container-sm-top">
+      <h1>Student Details</h1>
 
-    <div class="text-start">
-        <a class="btn btn-primary btn-goBack"
-           href="/studentList"
-           role="button"
-        >Go Back</a>
-    </div>
-
-    <div class="details">
+      <div class="container-sm-details">
         <p class="details-label">RUT:</p>
         <p th:text="${student.rut}"></p>
 
@@ -91,37 +100,62 @@
         <p class="details-label">Average Grade:</p>
         <p th:text="${student.averageGrade}"></p>
 
+        <p class="details-label">Payment method:</p>
+        <p th:text="${student.paymentMethod}"></p>
+
+        <p class="details-label">Agreed installments:</p>
+        <p th:text="${student.agreedInstallments}"></p>
+
+        <p class="details-label">Paid installments:</p>
+        <p th:text="${student.installmentsPaid}"></p>
+
+        <p class="details-label">Overdue installments:</p>
+        <p th:text="${student.overdueInstallments}"></p>
+
         <p class="details-label">Agreed duty:</p>
         <p th:text="${student.totalAmountToPay}"></p>
 
         <p class="details-label">Total amount paid:</p>
         <p th:text="${student.totalAmountPaid}"></p>
 
-        <p class="details-label">Agreed installments:</p>
-        <p th:text="${student.agreedInstallments}"></p>
+        <p class="details-label">Last payment:</p>
+        <p th:text="${student.lastPaymentDate}"></p>
 
-    </div>
+      </div>
 
-    <div class="installments">
+      <div class="container-sm-installments">
         <h2>Installments</h2>
-        <table class="table">
+
+        <div class="installments">
+          <table class="table">
             <thead class="thead-dark">
-            <tr>
+              <tr>
                 <th>Amount</th>
+                <th>Overdue price</th>
                 <th>Status (0 -> Unpaid // 1 -> Paid)</th>
                 <th>Payment date</th>
-            </tr>
+                <th>Overdue status</th>
+              </tr>
             </thead>
             <tbody>
-            <tr th:each="installment : ${installments}">
+              <tr th:each="installment : ${installments}">
                 <td th:text="${installment.installmentAmount}"></td>
+                <td th:text="${installment.installmentOverduePrice}"></td>
                 <td th:text="${installment.installmentStatus}"></td>
                 <td th:text="${installment.installmentPaymentDate}"></td>
-            </tr>
+                <td th:text="${installment.installmentOverdueStatus}"></td>
+              </tr>
             </tbody>
-        </table>
-    </div>
-</div>
+          </table>
+        </div>
+        
+      </div>
 
-</body>
+      <div class="text-start">
+        <a class="btn btn-primary btn-goBack" href="/" role="button">Go Back</a>
+      </div>
+
+    </div>
+    
+  </body>
 </html>

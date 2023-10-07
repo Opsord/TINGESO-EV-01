@@ -203,7 +203,7 @@ public class FileManagerService {
             student.setTotalAmountPaid(0);
 
             // Update installments info
-            administrationOffice.updateStudentInstallments(student);
+            administrationOffice.updateStudent(student);
 
             // Save the student to the database
             studentRepository.save(student);

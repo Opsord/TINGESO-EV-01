@@ -48,8 +48,20 @@ public class StudentEntity {
     // Average grade in tests
     private int averageGrade;
 
+    // Payment method
+    private String paymentMethod;
+
     // Number of agreed installments
     private int agreedInstallments;
+
+    // Number of installments paid
+    private int installmentsPaid;
+
+    // Number of overdue installments
+    private int overdueInstallments;
+
+    // Last payment date
+    private LocalDate lastPaymentDate;
 
     // Total amount to pay
     private int totalAmountToPay;

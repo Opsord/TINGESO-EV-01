@@ -59,14 +59,44 @@ public class InstallmentService {
         return installmentRepository.findByInstallmentPaymentDate(installmentDate);
     }
 
+    // Find by installment overdue status
+    public InstallmentEntity findByInstallmentOverdue(int installmentOverdue) {
+        return installmentRepository.findByInstallmentOverdueStatus(installmentOverdue);
+    }
+
+    // Find by installment overdue price
+    public InstallmentEntity findByInstallmentOverduePrice(int installmentOverduePrice) {
+        return installmentRepository.findByInstallmentOverduePrice(installmentOverduePrice);
+    }
+
     // Find all installments by student RUT
     public ArrayList<InstallmentEntity> findAllByInstallmentRUT(String installmentRUT) {
-        return (ArrayList<InstallmentEntity>) installmentRepository.findAllInstallmentsByRUT(installmentRUT);
+        return (installmentRepository.findAllInstallmentsByRUT(installmentRUT));
     }
 
     // Find all paid installments by student RUT
     public ArrayList<InstallmentEntity> findAllPaidInstallmentsByRUT(String installmentRUT) {
-        return (ArrayList<InstallmentEntity>) installmentRepository.findAllPaidInstallmentsByRUT(installmentRUT);
+        return (installmentRepository.findAllPaidInstallmentsByRUT(installmentRUT));
+    }
+
+    // Verify is an installment is overdue
+    public boolean isInstallmentOverdue(InstallmentEntity installment) {
+        // If the installment payment date is 1 month before the current date
+        // and the installment status is 0 (unpaid), then the installment is overdue
+        return installment.getInstallmentPaymentDate().isBefore(LocalDate.now().minusMonths(1)) && installment.getInstallmentStatus() == 0;
+    }
+
+    // Find all overdue installments by student RUT
+    public ArrayList<InstallmentEntity> findAllOverdueInstallmentsByRUT(String installmentRUT) {
+        return (installmentRepository.findAllOverdueInstallmentsByRUT(installmentRUT));
+    }
+
+    // Update installment overdue status
+    public void updateInstallmentOverdueStatus(InstallmentEntity installment) {
+        // If the installment is overdue, then set the installment overdue status to 1
+        if (isInstallmentOverdue(installment)) {
+            installment.setInstallmentOverdueStatus(1);
+        }
     }
 
 }

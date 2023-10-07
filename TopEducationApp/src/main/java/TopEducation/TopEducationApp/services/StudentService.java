@@ -1,7 +1,6 @@
 package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.StudentEntity;
-import TopEducation.TopEducationApp.entities.StudentScoreEntity;
 import TopEducation.TopEducationApp.repositories.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,4 +88,48 @@ public class StudentService {
         return studentRepository.findByGraduationYear(graduationYear);
     }
 
+    // Find by exams taken
+    public StudentEntity findByExamsTaken(int examsTaken) {
+        return studentRepository.findByExamsTaken(examsTaken);
+    }
+
+    // Find by average score
+    public StudentEntity findByAverageGrade(int averageGrade) {
+        return studentRepository.findByAverageGrade(averageGrade);
+    }
+
+    // Find by payment method
+    public StudentEntity findByPaymentMethod(String paymentMethod) {
+        return studentRepository.findByPaymentMethod(paymentMethod);
+    }
+
+    // Find by agreed installments
+    public StudentEntity findByAgreedInstallments(int agreedInstallments) {
+        return studentRepository.findByAgreedInstallments(agreedInstallments);
+    }
+
+    // Find by installments paid
+    public StudentEntity findByInstallmentsPaid(int installmentsPaid) {
+        return studentRepository.findByInstallmentsPaid(installmentsPaid);
+    }
+
+    // Find by overdue installments
+    public StudentEntity findByOverdueInstallments(int overdueInstallments) {
+        return studentRepository.findByOverdueInstallments(overdueInstallments);
+    }
+
+    // Find by last payment date
+    public StudentEntity findByLastPaymentDate(String lastPaymentDate) {
+        return studentRepository.findByLastPaymentDate(LocalDate.parse(lastPaymentDate));
+    }
+
+    // Find by total amount to pay
+    public StudentEntity findByTotalAmountToPay(int totalAmountToPay) {
+        return studentRepository.findByTotalAmountToPay(totalAmountToPay);
+    }
+
+    // Find by total amount paid
+    public StudentEntity findByTotalAmountPaid(int totalAmountPaid) {
+        return studentRepository.findByTotalAmountPaid(totalAmountPaid);
+    }
 }

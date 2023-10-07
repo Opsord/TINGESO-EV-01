@@ -218,27 +218,96 @@ public class AdministrationOffice {
         }
     }
 
-    // Calculate the amount paid in installments
-    public int calculateCurrentDebt(StudentEntity student) {
-        // Get an array of the paid installments that match the RUT of the student
-        ArrayList<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT(student.getRut());
-        // Get the total amount paid
-        int totalAmountPaid = 0;
-        for (InstallmentEntity installment : paidInstallments) {
-            totalAmountPaid += installment.getInstallmentAmount();
-        }
-        // Adding a validation to avoid trouble
-        if (isValidStudent(student)) {
-            return totalAmountPaid;
-        } else {
-            return 0;
+    // Check for overdue installments
+    public void calculateGeneralInterest(StudentEntity student) {
+        // Get the overdue installments
+        ArrayList<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT(student.getRut());
+        // if there are overdue installments, calculate the interest and update the installment amount
+        int overdueInstallmentsSize = overdueInstallments.size();
+        if (!overdueInstallments.isEmpty()) {
+            // Calculate the interest
+            double interest = switch (overdueInstallmentsSize) {
+                case 1 -> 0.03;
+                case 2 -> 0.06;
+                case 3 -> 0.09;
+                default -> 0.12;
+            };
+
+            // Update every installment overdue price
+            ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+            for (InstallmentEntity installment : installments) {
+                int installmentOverduePrice = (int) (installment.getInstallmentAmount() * interest);
+                installment.setInstallmentOverduePrice(installment.getInstallmentAmount() + installmentOverduePrice);
+            }
         }
     }
 
+    // Update student numbers
+    public void updateStudentNumbers(StudentEntity student) {
+        // Get an array of the installments that match the RUT of the student
+        ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+        // Calculate the total amount paid and paid installments
+        int totalAmountPaid = 0;
+        int paidInstallments = 0;
+        for (InstallmentEntity installment : installments) {
+            if (installment.getInstallmentStatus() == 1) {
+                totalAmountPaid += installment.getInstallmentAmount();
+                paidInstallments++;
+            }
+        }
+        // Update the total amount paid and paid installments
+        student.setTotalAmountPaid(totalAmountPaid);
+        student.setInstallmentsPaid(paidInstallments);
+
+        // Calculate the total amount to pay if there are overdue installments
+        ArrayList<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT(student.getRut());
+        int totalAmountToPay = 0;
+        if (!overdueInstallments.isEmpty()) {
+            for (InstallmentEntity installment : overdueInstallments) {
+                totalAmountToPay += installment.getInstallmentOverduePrice();
+            }
+        } else {
+            for (InstallmentEntity installment : installments) {
+                totalAmountToPay += installment.getInstallmentAmount();
+            }
+        }
+        // Update the total amount to pay
+        student.setTotalAmountToPay(totalAmountToPay);
+        // Update overdue installments
+        student.setOverdueInstallments(overdueInstallments.size());
+
+        // Update payment method (more efficient if it is done here)
+        if (student.getAgreedInstallments() == 1) {
+            student.setPaymentMethod("Cash");
+        } else {
+            student.setPaymentMethod("Installments");
+        }
+    }
+
+    // Update last payment date
+    public void updateLastPaymentDate(StudentEntity student) {
+        // Get the paid installments of the student
+        ArrayList<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT(student.getRut());
+        // Get the payment date of the closest installment to the current date
+        LocalDate closestPaymentDate = LocalDate.of(LocalDate.now().getYear(), 1, 5);
+        for (InstallmentEntity installment : paidInstallments) {
+            if (installment.getInstallmentPaymentDate().isAfter(closestPaymentDate)) {
+                closestPaymentDate = installment.getInstallmentPaymentDate();
+            }
+        }
+        // Update the last payment date
+        if (!paidInstallments.isEmpty()) {
+            student.setLastPaymentDate(closestPaymentDate);
+        } else {
+            student.setLastPaymentDate(null);
+        }
+    }
+
+
     // Enrollment
 
-    // Update student installments
-    public void updateStudentInstallments(StudentEntity student) {
+    // Check if a student has missing installments
+    public void checkMissingInstallments(StudentEntity student) {
         // Calculate the maximum number of installments
         int maxInstallments = calculateMaxInstallments(student);
         // Get the number of installments agreed by the student
@@ -251,6 +320,7 @@ public class AdministrationOffice {
         ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
         // Calculate the number of installments that are missing
         int missingInstallments = agreedInstallments - installments.size();
+
         // Verify if there are missing installments
         if (missingInstallments > 0) {
             // Generate the missing installments
@@ -259,16 +329,32 @@ public class AdministrationOffice {
                 InstallmentEntity installment = new InstallmentEntity();
                 installment.setInstallmentRUT(student.getRut());
                 // Set the amount of the installment
-                installment.setInstallmentAmount((int) calculateFinalCost(student) / agreedInstallments);
-                // Set the payment date of the installment
-                installment.setInstallmentPaymentDate(LocalDate.now().plusMonths(i));
+                installment.setInstallmentAmount (calculateFinalCost(student) / agreedInstallments);
+                // Set the payment date of the installment (starting from the 5th on january)
+                LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 1, 5);
+                installment.setInstallmentPaymentDate(startDate.plusMonths(i));
                 // Set the status - Installment status: 0 -> Pending, 1 -> Paid
                 installment.setInstallmentStatus(0);
+                installmentService.updateInstallmentOverdueStatus(installment);
+                // Set the overdue price
+                installment.setInstallmentOverduePrice(0);
+
                 // Save the installment
                 installmentService.saveInstallment(installment);
             }
         }
-        // Update the total amount paid
-        student.setTotalAmountPaid(calculateCurrentDebt(student));
     }
+
+    // Update student installments
+        public void updateStudent(StudentEntity student) {
+        // Check if there are missing installments
+        checkMissingInstallments(student);
+        // Apply the interest if needed
+        calculateGeneralInterest(student);
+        // Update the total amount paid
+        updateStudentNumbers(student);
+        // Update the last payment date
+        updateLastPaymentDate(student);
+    }
+
 }

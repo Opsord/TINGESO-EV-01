@@ -24,6 +24,11 @@ public interface InstallmentRepository extends CrudRepository<InstallmentEntity,
     @Query("SELECT e FROM InstallmentEntity e WHERE e.installmentRUT = :installmentRUT AND e.installmentStatus = 1")
     ArrayList<InstallmentEntity> findAllPaidInstallmentsByRUT(@Param("installmentRUT") String installmentRUT);
 
+    // Custom query to find all overdue installments for a given student and
+    // save them in a list
+    @Query("SELECT e FROM InstallmentEntity e WHERE e.installmentRUT = :installmentRUT AND e.installmentOverdueStatus = 1")
+    ArrayList<InstallmentEntity> findAllOverdueInstallmentsByRUT(@Param("installmentRUT") String installmentRUT);
+
     // FindBy methods
 
     // Find by installment RUT
@@ -38,4 +43,9 @@ public interface InstallmentRepository extends CrudRepository<InstallmentEntity,
     // Find by installment payment date
     InstallmentEntity   findByInstallmentPaymentDate(LocalDate installmentPaymentDate);
 
+    // Find by installment overdue status
+    InstallmentEntity findByInstallmentOverdueStatus(int installmentOverdueStatus);
+
+    // Find by installment overdue price
+    InstallmentEntity findByInstallmentOverduePrice(int installmentOverduePrice);
 }

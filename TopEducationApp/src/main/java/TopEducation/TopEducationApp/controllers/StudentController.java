@@ -70,7 +70,7 @@ public class StudentController {
     public String showStudentDetails(@PathVariable Long id, Model model) {
         // Get student by id
         StudentEntity student = studentService.findById(id);
-        administrationOffice.updateStudentInstallments(student);
+        administrationOffice.updateStudent(student);
         model.addAttribute("student", student);
         // Get installments by student RUT
         ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());

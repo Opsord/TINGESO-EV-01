@@ -20,21 +20,4 @@ public interface StudentScoreRepository extends CrudRepository<StudentScoreEntit
     @Query("SELECT e FROM StudentScoreEntity e WHERE e.gradeRUT = :gradeRUT")
     ArrayList<StudentScoreEntity> findAllGradesByStudentRUT(@Param("gradeRUT") String gradeRUT);
 
-    // FindBy methods
-
-    // Find by studentRut
-    StudentScoreEntity findByGradeRUT(String gradeRUT);
-
-    // Find by grade
-    StudentScoreEntity findByScore(double score);
-
-    // Find by exam date
-    StudentScoreEntity findByExamDate(LocalDate examDate);
-
-    // Find by student name
-    StudentScoreEntity findByStudentName(String studentName);
-
-    // Find by student last name
-    StudentScoreEntity findByStudentLastName(String studentLastName);
-
 }

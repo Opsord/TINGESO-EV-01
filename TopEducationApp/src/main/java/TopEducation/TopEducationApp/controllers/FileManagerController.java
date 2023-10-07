@@ -34,7 +34,7 @@ public class FileManagerController {
             // Save the Excel file data to the database
             fileManagerService.saveExcelDataStudentGrade(file);
             fileManagerService.saveExcelDataStudent(file);
-            // Update the students info
+            // Update the student's info
             fileManagerService.updateStudentsInfo();
             // Redirect to the students list page
             return "redirect:/studentList";

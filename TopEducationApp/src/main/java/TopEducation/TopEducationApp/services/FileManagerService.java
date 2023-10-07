@@ -37,7 +37,7 @@ public class FileManagerService {
     @Autowired
     private StudentService studentService;
 
-    // Method to save the data from an Excel with the students information
+    // Method to save the data from an Excel with the student's information
     @Generated
     public void saveExcelDataStudent(MultipartFile file) throws IOException {
 
@@ -194,7 +194,7 @@ public class FileManagerService {
                 averageScore += studentGrade.getScore();
                 count++;
             }
-            averageScore = (int) (averageScore / count);
+            averageScore = (averageScore / count);
 
             // Update the student info
             student.setAverageGrade(averageScore);

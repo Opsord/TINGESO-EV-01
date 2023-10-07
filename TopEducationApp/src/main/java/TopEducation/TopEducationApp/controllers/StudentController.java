@@ -40,27 +40,27 @@ public class StudentController {
 
     // Student creator page
     @GetMapping("/studentCreator")
-    public String createStudent(Model model) {
+    public String createStudent() {
         return "studentCreator";
     }
 
     // Create a student and save it to the database
     @PostMapping("/studentCreator")
-    public String createStudent(StudentEntity student, Model model) {
+    public String createStudent(StudentEntity student) {
         studentService.saveStudent(student);
         return "redirect:/studentList";
     }
 
     // Delete a student from the database
     @GetMapping("/studentList/{id}/delete")
-    public String deleteStudent(StudentEntity student, Model model) {
+    public String deleteStudent(StudentEntity student) {
         studentService.deleteStudent(student.getId());
         return "redirect:/studentList";
     }
 
     // Delete all students from the database
     @GetMapping("/studentList/deleteAll")
-    public String deleteAllStudents(Model model) {
+    public String deleteAllStudents() {
         studentService.deleteAllStudents();
         return "redirect:/studentList";
     }
@@ -68,7 +68,7 @@ public class StudentController {
     // Student detail page
     @GetMapping("/studentList/{id}/details")
     public String showStudentDetails(@PathVariable Long id, Model model) {
-        // Get student by id
+        // Get a student by id
         StudentEntity student = studentService.findById(id);
         administrationOffice.updateStudent(student);
         model.addAttribute("student", student);

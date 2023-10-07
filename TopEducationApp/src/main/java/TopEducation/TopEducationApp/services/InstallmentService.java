@@ -44,31 +44,6 @@ public class InstallmentService {
 
     // Find by methods
 
-    // Find by installmentRUT
-    public InstallmentEntity findByInstallmentRut(String installmentRUT) {
-        return installmentRepository.findByInstallmentRUT(installmentRUT);
-    }
-
-    // Find by installment amount
-    public InstallmentEntity findByInstallmentAmount(int installmentAmount) {
-        return installmentRepository.findByInstallmentAmount(installmentAmount);
-    }
-
-    // Find by installment date
-    public InstallmentEntity findByInstallmentDate(LocalDate installmentDate) {
-        return installmentRepository.findByInstallmentPaymentDate(installmentDate);
-    }
-
-    // Find by installment overdue status
-    public InstallmentEntity findByInstallmentOverdue(int installmentOverdue) {
-        return installmentRepository.findByInstallmentOverdueStatus(installmentOverdue);
-    }
-
-    // Find by installment overdue price
-    public InstallmentEntity findByInstallmentOverduePrice(int installmentOverduePrice) {
-        return installmentRepository.findByInstallmentOverduePrice(installmentOverduePrice);
-    }
-
     // Find all installments by student RUT
     public ArrayList<InstallmentEntity> findAllByInstallmentRUT(String installmentRUT) {
         return (installmentRepository.findAllInstallmentsByRUT(installmentRUT));

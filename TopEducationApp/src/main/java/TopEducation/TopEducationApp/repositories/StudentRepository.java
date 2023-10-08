@@ -4,8 +4,6 @@ import TopEducation.TopEducationApp.entities.StudentEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-
 @Repository
 
 // Part of the persistence layer

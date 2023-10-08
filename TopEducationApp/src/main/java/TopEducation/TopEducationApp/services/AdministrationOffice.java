@@ -4,6 +4,7 @@ import TopEducation.TopEducationApp.entities.InstallmentEntity;
 import TopEducation.TopEducationApp.entities.StudentEntity;
 import TopEducation.TopEducationApp.entities.StudentScoreEntity;
 
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,7 +71,7 @@ public class AdministrationOffice {
     }
 
     // Verify if the student score is valid
-    public boolean isValidStudentGrade(StudentScoreEntity studentScore) {
+    public boolean isValidStudentScore(StudentScoreEntity studentScore) {
         // Verify if the student´s parameters are valid
 
         // Verify if the student has a valid rut
@@ -158,13 +159,13 @@ public class AdministrationOffice {
         // Calculating how many years have passed since the student graduated
         int yearsSinceGraduation = currentYear.getYear() - student.getGraduationYear();
         // First range: 0-1 year
-        if (yearsSinceGraduation < 1) {
+        if (yearsSinceGraduation <= 1) {
             return 0.15;
             // Second range: 1-2 years
-        } else if (yearsSinceGraduation < 3) {
+        } else if (yearsSinceGraduation <= 3) {
             return 0.08;
             // Third range: 3-4 years
-        } else if (yearsSinceGraduation < 5) {
+        } else if (yearsSinceGraduation <= 5) {
             return 0.04;
             // Fourth range: 5+ years
         } else {
@@ -200,7 +201,7 @@ public class AdministrationOffice {
         double timeAfterGraduationDis = calculateTimeAfterGraduationDiscount(student);
         double averageScoreDis = calculateAverageScoreDiscount(student);
         // Calculating the final price
-        double finalPrice = annualCost * (1 - schoolTypeDis - timeAfterGraduationDis - averageScoreDis);
+        int finalPrice = (int) (annualCost * (1 - schoolTypeDis - timeAfterGraduationDis - averageScoreDis));
         // Adding a validation to avoid trouble
         if (isValidStudent(student)) {
             return finalPrice;
@@ -218,7 +219,9 @@ public class AdministrationOffice {
         }
     }
 
+
     // Check for overdue installments
+    @Generated
     public void calculateGeneralInterest(StudentEntity student) {
         // Get the overdue installments
         ArrayList<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT(student.getRut());
@@ -243,6 +246,7 @@ public class AdministrationOffice {
     }
 
     // Update student numbers
+    @Generated
     public void updateStudentNumbers(StudentEntity student) {
         // Get an array of the installments that match the RUT of the student
         ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
@@ -285,6 +289,7 @@ public class AdministrationOffice {
     }
 
     // Update last payment date
+    @Generated
     public void updateLastPaymentDate(StudentEntity student) {
         // Get the paid installments of the student
         ArrayList<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT(student.getRut());
@@ -303,10 +308,8 @@ public class AdministrationOffice {
         }
     }
 
-
-    // Enrollment
-
     // Check if a student has missing installments
+    @Generated
     public void checkMissingInstallments(StudentEntity student) {
         // Calculate the maximum number of installments
         int maxInstallments = calculateMaxInstallments(student);
@@ -346,7 +349,8 @@ public class AdministrationOffice {
     }
 
     // Update student installments
-        public void updateStudent(StudentEntity student) {
+    @Generated
+    public void updateStudent(StudentEntity student) {
         // Check if there are missing installments
         checkMissingInstallments(student);
         // Apply the interest if needed

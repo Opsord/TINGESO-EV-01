@@ -162,7 +162,7 @@ public class FileManagerService {
                         studentGrade.setStudentLastName(studentLastName);
 
                         // Verify if the student grade is valid before saving it to the database
-                        if (administrationOffice.isValidStudentGrade(studentGrade)) {
+                        if (administrationOffice.isValidStudentScore(studentGrade)) {
                             // Save the student grade to the database
                             studentScoreRepository.save(studentGrade);
                         }

@@ -29,10 +29,7 @@ public class FileManagerService {
     private AdministrationOffice administrationOffice;
 
     @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private StudentScoreRepository studentScoreRepository;
+    private StudentScoreService studentScoreService;
 
     @Autowired
     private StudentService studentService;
@@ -104,7 +101,7 @@ public class FileManagerService {
                     // Verify if the student is valid before saving it to the database
                     if (administrationOffice.isValidStudent(student)) {
                         // Save the student to the database
-                        studentRepository.save(student);
+                        studentService.saveStudent(student);
                     }
 
                 }
@@ -164,7 +161,7 @@ public class FileManagerService {
                         // Verify if the student grade is valid before saving it to the database
                         if (administrationOffice.isValidStudentScore(studentGrade)) {
                             // Save the student grade to the database
-                            studentScoreRepository.save(studentGrade);
+                            studentScoreService.saveStudentScore(studentGrade);
                         }
 
                     }
@@ -184,8 +181,7 @@ public class FileManagerService {
         // For each student, update the student info
         for (StudentEntity student : students) {
             // Get the student grades
-            Iterable<StudentScoreEntity> studentGrades = studentScoreRepository
-                    .findAllGradesByStudentRUT(student.getRut());
+            Iterable<StudentScoreEntity> studentGrades = studentScoreService.getAllStudentGradesByStudentRUT(student.getRut());
 
             // Calculate the average score
             int averageScore = 0;
@@ -206,7 +202,7 @@ public class FileManagerService {
             administrationOffice.updateStudent(student);
 
             // Save the student to the database
-            studentRepository.save(student);
+            studentService.saveStudent(student);
         }
     }
 }

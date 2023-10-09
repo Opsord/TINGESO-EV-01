@@ -40,4 +40,9 @@ public class StudentScoreService {
         }
     }
 
+    // Get all the student grades by student RUT
+    public ArrayList<StudentScoreEntity> getAllStudentGradesByStudentRUT(String gradeRUT) {
+        return studentScoreRepository.findAllGradesByStudentRUT(gradeRUT);
+    }
+
 }

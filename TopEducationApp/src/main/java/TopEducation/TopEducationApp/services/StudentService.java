@@ -2,6 +2,7 @@ package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.StudentEntity;
 import TopEducation.TopEducationApp.repositories.StudentRepository;
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class StudentService {
     StudentScoreService studentScoreService;
 
     // Get all the students
+    @Generated
     public ArrayList<StudentEntity> getAllStudents() {
         return (ArrayList<StudentEntity>) studentRepository.findAll();
     }
@@ -37,6 +39,7 @@ public class StudentService {
     }
 
     // Delete all students
+    @Generated
     public void deleteAllStudents() {
         try {
             studentRepository.deleteAll();

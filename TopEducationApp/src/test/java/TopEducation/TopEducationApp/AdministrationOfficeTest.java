@@ -955,7 +955,7 @@ class AdministrationOfficeTest {
 
         // Deleting the installments
         for (InstallmentEntity installment: studentInstallments) {
-            installmentService.deleteInstallment(installment);
+            installmentService.deleteInstallment(installment.getId());
         }
     }
 
@@ -990,7 +990,7 @@ class AdministrationOfficeTest {
         // Deleting the installments
         ArrayList<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
         for (InstallmentEntity installment: studentInstallments) {
-            installmentService.deleteInstallment(installment);
+            installmentService.deleteInstallment(installment.getId());
         }
 
     }
@@ -1033,7 +1033,7 @@ class AdministrationOfficeTest {
         assertEquals(student.getLastPaymentDate(), installment.getInstallmentPaymentDate());
 
         // Deleting the installments
-        installmentService.deleteInstallment(installment);
+        installmentService.deleteInstallment(installment.getId());
     }
 
     @Test
@@ -1064,7 +1064,7 @@ class AdministrationOfficeTest {
 
         // Deleting the installments
         for (InstallmentEntity installment: studentInstallments) {
-            installmentService.deleteInstallment(installment);
+            installmentService.deleteInstallment(installment.getId());
         }
     }
 

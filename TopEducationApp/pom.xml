@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>TopEducation</groupId>
 	<artifactId>TopEducationApp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>BETA</version>
 	<name>TopEducationAppMaven</name>
 	<description>Top Education Maven App</description>
 	<properties>

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    image: opsord/topeducation_apzd
+    ports:
+      - "8001:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/topEducation
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1502
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=topEducation
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1502

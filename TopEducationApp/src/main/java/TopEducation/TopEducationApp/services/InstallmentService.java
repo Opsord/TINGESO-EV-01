@@ -3,6 +3,7 @@ package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.InstallmentEntity;
 import TopEducation.TopEducationApp.repositories.InstallmentRepository;
+import lombok.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,15 @@ public class InstallmentService {
     public void deleteInstallment(Long id) {
         try {
             installmentRepository.deleteById(id);
+        } catch (Exception ignored) {
+        }
+    }
+
+    // Delete all installments
+    @Generated
+    public void deleteAllInstallments() {
+        try {
+            installmentRepository.deleteAll();
         } catch (Exception ignored) {
         }
     }

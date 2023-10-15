@@ -1,18 +1,28 @@
-version: '3'
+version: '3.8'
 services:
-  app:
-    image: opsord/topeducation_apzd
-    ports:
-      - "8001:8090"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/topEducation
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=1502
-    depends_on:
-      - db
   db:
     image: postgres:latest
+    restart: always
+    volumes:
+      - ./data:/var/lib/postgresql/top_education_data
     environment:
       - POSTGRES_DB=topEducation
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=1502
+    ports:
+      - "5432:5432"
+  app:
+    container_name: top-education
+    image: opsord/top_education_apzd
+    ports:
+      - "8001:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/topEducation?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1502
+    deploy:
+        replicas: 1
+        restart_policy:
+            condition: on-failure
+    depends_on:
+      - db

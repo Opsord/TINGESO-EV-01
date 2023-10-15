@@ -1,5 +1,6 @@
 package TopEducation.TopEducationApp.services;
 
+import TopEducation.TopEducationApp.entities.InstallmentEntity;
 import TopEducation.TopEducationApp.entities.StudentEntity;
 import TopEducation.TopEducationApp.repositories.StudentRepository;
 import lombok.Generated;
@@ -19,6 +20,9 @@ public class StudentService {
     @Autowired
     StudentScoreService studentScoreService;
 
+    @Autowired
+    InstallmentService installmentService;
+
     // Get all the students
     @Generated
     public ArrayList<StudentEntity> getAllStudents() {
@@ -34,6 +38,11 @@ public class StudentService {
     public void deleteStudent(Long id) {
         try {
             studentRepository.deleteById(id);
+            StudentEntity student = findById(id);
+            ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+            for (InstallmentEntity installment : installments) {
+                installmentService.deleteInstallment(installment.getId());
+            }
         } catch (Exception ignored) {
         }
     }
@@ -43,6 +52,7 @@ public class StudentService {
     public void deleteAllStudents() {
         try {
             studentRepository.deleteAll();
+            installmentService.deleteAllInstallments();
         } catch (Exception ignored) {
         }
     }

@@ -1,7 +1,7 @@
-upstream TopEducationApp {
-server top-education01:8090;
-server top-education02:8090;
-server top-education03:8090;
+upstream top_education_app {
+server app01:8090;
+server app02:8090;
+server app03:8090;
 }
 
 server {
@@ -10,7 +10,7 @@ charset utf-8;
 access_log off;
 
 location / {
-proxy_pass https://TopEducationApp;
+proxy_pass http://top_education_app;
 proxy_set_header Host $host:$server_port;
 proxy_set_header X-Forwarded-Host $server_name;
 proxy_set_header X-Real-IP $remote_addr;

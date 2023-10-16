@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.7'
 services:
   nginx:
     image: nginx:latest
@@ -11,7 +11,6 @@ services:
       - app01
       - app02
       - app03
-      - app04
 
   db:
     container_name: top-education-db
@@ -61,21 +60,6 @@ services:
     image: opsord/top_education_apzd
     ports:
       - "8003:8090"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/topEducation?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=1502
-    deploy:
-      restart_policy:
-        condition: on-failure
-    depends_on:
-      - db
-
-  app04:
-    container_name: top-education04
-    image: opsord/top_education_apzd
-    ports:
-      - "8004:8090"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/topEducation?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
       - SPRING_DATASOURCE_USERNAME=postgres

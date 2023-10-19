@@ -9,8 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class InstallmentServiceTest {
@@ -169,5 +168,25 @@ class InstallmentServiceTest {
         installmentService.deleteInstallment(savedInstallment.get(0).getId());
     }
 
+    @Test
+        // Test for updateInstallmentStatus method
+    void markInstallmentAsPAid() {
+        InstallmentEntity installment = new InstallmentEntity();
+        installment.setInstallmentRUT("TestRUT");
+        installment.setInstallmentPaymentDate(LocalDate.of(2021, 10, 1));
+        installment.setInstallmentStatus(0);
+        installment.setInstallmentOverdueStatus(0);
+        installment.setInstallmentOverduePrice(150000);
+        installment.setInstallmentAmount(100000);
+
+        installmentService.saveInstallment(installment);
+        // Find the installment by RUT
+        ArrayList<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        installmentService.markInstallmentAsPAid(savedInstallment.get(0));
+
+        assertEquals(savedInstallment.get(0).getInstallmentStatus(), 1);
+        installmentService.deleteInstallment(savedInstallment.get(0).getId());
+
+    }
 
 }

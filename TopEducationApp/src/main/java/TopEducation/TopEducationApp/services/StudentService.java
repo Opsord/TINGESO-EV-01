@@ -63,5 +63,4 @@ public class StudentService {
     public StudentEntity findById(Long id) {
         return studentRepository.findById(id).orElse(null);
     }
-
 }

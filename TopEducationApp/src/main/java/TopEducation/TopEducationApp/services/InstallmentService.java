@@ -68,7 +68,7 @@ public class InstallmentService {
         return false;
     }
 
-    // Change installment status to paid
+    // Change installment status to pay
     public void markInstallmentAsPAid(InstallmentEntity installment) {
         installment.setInstallmentStatus(1);
     }

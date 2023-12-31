@@ -38,5 +38,4 @@ public class InstallmentEntity {
 
     // Installment overdue price
     private int installmentOverduePrice;
-
 }

@@ -83,7 +83,7 @@
     <tbody>
     <tr th:each="studentGrade : ${studentGrades}">
       <td th:text="${studentGrade.id}"></td>
-      <td th:text="${studentGrade.gradeRUT}"></td>
+      <td th:text="${studentGrade.getScoreRUT}"></td>
       <td th:text="${studentGrade.score}"></td>
       <td th:text="${studentGrade.examDate}"></td>
       <td>

@@ -1,7 +1,6 @@
 package TopEducation.TopEducationApp.services;
 
 import TopEducation.TopEducationApp.entities.StudentScoreEntity;
-import TopEducation.TopEducationApp.repositories.StudentScoreRepository;
 import lombok.Generated;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import TopEducation.TopEducationApp.entities.StudentEntity;
-import TopEducation.TopEducationApp.repositories.StudentRepository;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -152,7 +150,7 @@ public class FileManagerService {
 
                         // Create a new student grade object
                         StudentScoreEntity studentGrade = new StudentScoreEntity();
-                        studentGrade.setGradeRUT(gradeRUT);
+                        studentGrade.setScoreRUT(gradeRUT);
                         studentGrade.setScore(score);
                         studentGrade.setExamDate(examDate);
                         studentGrade.setStudentName(studentName);

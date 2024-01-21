@@ -75,8 +75,8 @@ public class AdministrationOffice {
         // Verify if the student´s parameters are valid
 
         // Verify if the student has a valid rut
-        if (studentScore.getGradeRUT() == null
-                || studentScore.getGradeRUT().isBlank()) {
+        if (studentScore.getScoreRUT() == null
+                || studentScore.getScoreRUT().isBlank()) {
             return false;
         }
         // Verify if the student has a valid score

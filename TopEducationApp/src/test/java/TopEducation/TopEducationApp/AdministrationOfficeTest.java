@@ -108,7 +108,7 @@ class AdministrationOfficeTest {
     void isValidStudentScoreCorrect() {
         // Setting up the student
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT("20.000.000-2");
+        studentScore.setScoreRUT("20.000.000-2");
         studentScore.setScore(800);
         studentScore.setExamDate(LocalDate.of(2023, 4, 15));
         studentScore.setStudentName("Aquiles");
@@ -124,7 +124,7 @@ class AdministrationOfficeTest {
     void isValidStudentScoreIncorrectRUT() {
         // Setting up the student
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT(" ");
+        studentScore.setScoreRUT(" ");
         studentScore.setScore(800);
         studentScore.setExamDate(LocalDate.of(2024, 4, 15));
         studentScore.setStudentName("Aquiles");
@@ -140,7 +140,7 @@ class AdministrationOfficeTest {
     void isValidStudentScoreIncorrectScore() {
         // Setting up the student
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT("20.000.000-2");
+        studentScore.setScoreRUT("20.000.000-2");
         studentScore.setScore(1100);
         studentScore.setExamDate(LocalDate.of(2024, 4, 15));
         studentScore.setStudentName("Aquiles");
@@ -156,7 +156,7 @@ class AdministrationOfficeTest {
     void isValidStudentScoreIncorrectExamDate() {
         // Setting up the student
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT("20.000.000-2");
+        studentScore.setScoreRUT("20.000.000-2");
         studentScore.setScore(800);
         studentScore.setExamDate(LocalDate.of(2090, 4, 15));
         studentScore.setStudentName("Aquiles");
@@ -172,7 +172,7 @@ class AdministrationOfficeTest {
     void isValidStudentScoreIncorrectStudentName() {
         // Setting up the student
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT("20.000.000-2");
+        studentScore.setScoreRUT("20.000.000-2");
         studentScore.setScore(800);
         studentScore.setExamDate(LocalDate.of(2024, 4, 15));
         studentScore.setStudentName("");
@@ -188,7 +188,7 @@ class AdministrationOfficeTest {
     void isValidStudentScoreIncorrectStudentLastName() {
         // Setting up the student
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT("20.000.000-2");
+        studentScore.setScoreRUT("20.000.000-2");
         studentScore.setScore(800);
         studentScore.setExamDate(LocalDate.of(2024, 4, 15));
         studentScore.setStudentName("Aquiles");

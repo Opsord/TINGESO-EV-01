@@ -16,7 +16,7 @@ public class StudentScoreServiceTest {
         // Test for saveStudentScore, deleteStudentGrade, and findById methods
     void saveAndDeleteStudentScore() {
         StudentScoreEntity studentScore = new StudentScoreEntity();
-        studentScore.setGradeRUT("99.999.999-K");
+        studentScore.setScoreRUT("99.999.999-K");
         studentScore.setStudentName("Aquiles");
         studentScore.setStudentLastName("Baeza");
         studentScore.setScore(800);
@@ -27,7 +27,7 @@ public class StudentScoreServiceTest {
 
         // Verify that the student grade was saved
         StudentScoreEntity savedStudentScore = studentScoreService.findById(studentScore.getId());
-        assert (savedStudentScore.getGradeRUT().equals("99.999.999-K"));
+        assert (savedStudentScore.getScoreRUT().equals("99.999.999-K"));
         assert (savedStudentScore.getStudentName().equals("Aquiles"));
         assert (savedStudentScore.getStudentLastName().equals("Baeza"));
         assert (savedStudentScore.getScore() == 800);
@@ -45,14 +45,14 @@ public class StudentScoreServiceTest {
         // Test for getAllStudentGradesByStudentRUT method
     void getAllStudentGradesByStudentRUT() {
         StudentScoreEntity studentScore1 = new StudentScoreEntity();
-        studentScore1.setGradeRUT("99.999.999-K");
+        studentScore1.setScoreRUT("99.999.999-K");
         studentScore1.setStudentName("Aquiles");
         studentScore1.setStudentLastName("Baeza");
         studentScore1.setScore(800);
         studentScore1.setExamDate(java.time.LocalDate.now());
 
         StudentScoreEntity studentScore2 = new StudentScoreEntity();
-        studentScore2.setGradeRUT("99.999.999-K");
+        studentScore2.setScoreRUT("99.999.999-K");
         studentScore2.setStudentName("Aquiles");
         studentScore2.setStudentLastName("Baeza");
         studentScore2.setScore(810);

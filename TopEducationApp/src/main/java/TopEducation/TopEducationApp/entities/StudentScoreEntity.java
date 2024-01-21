@@ -22,18 +22,13 @@ public class StudentScoreEntity {
     private Long id;
 
     // RUT is a unique identifier for Chilean citizens
+    private String scoreRUT;
 
-    private String gradeRUT;
-
-    // Score in the exam
     private int score;
 
-    // Date of the exam
     private LocalDate examDate;
 
-    // Name of the student
     private String studentName;
 
-    // Last name of the student
     private String studentLastName;
 }

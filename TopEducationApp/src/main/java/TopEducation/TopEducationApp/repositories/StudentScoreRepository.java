@@ -16,7 +16,7 @@ public interface StudentScoreRepository extends CrudRepository<StudentScoreEntit
 
     // Custom query to find all scores/grades for a given student and
     // save them in a list
-    @Query("SELECT e FROM StudentScoreEntity e WHERE e.gradeRUT = :gradeRUT")
+    @Query("SELECT e FROM StudentScoreEntity e WHERE e.scoreRUT = :gradeRUT")
     ArrayList<StudentScoreEntity> findAllGradesByStudentRUT(@Param("gradeRUT") String gradeRUT);
 
 }

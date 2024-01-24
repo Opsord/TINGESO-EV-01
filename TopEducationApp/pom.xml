@@ -20,6 +20,9 @@
 			src/main/TopEducation.TopEducationApp/entities/*,
 			src/main/TopEducation.TopEducationApp/repositories/*,
 		</sonar.exclusions>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
+		<sonar.language>java</sonar.language>
 	</properties>
 	<dependencies>
 

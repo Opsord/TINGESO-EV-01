@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -73,7 +74,7 @@ public class StudentController {
         administrationOffice.updateStudent(student);
         model.addAttribute("student", student);
         // Get installments by student RUT
-        ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
         model.addAttribute("installments", installments);
         // Get the total amount to pay
         return "studentDetails";

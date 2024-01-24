@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 
@@ -39,7 +40,7 @@ public class StudentService {
         try {
             studentRepository.deleteById(id);
             StudentEntity student = findById(id);
-            ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+            List<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
             for (InstallmentEntity installment : installments) {
                 installmentService.deleteInstallment(installment.getId());
             }

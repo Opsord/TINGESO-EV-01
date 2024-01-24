@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,18 +29,18 @@ class InstallmentServiceTest {
         installmentService.saveInstallment(installment);
 
     // Verify that the installment was saved
-        ArrayList<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        List<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
         assert(savedInstallment.size() == 1);
         assert(savedInstallment.get(0).getInstallmentRUT().equals("TestRUT"));
         assert(savedInstallment.get(0).getInstallmentPaymentDate().equals(LocalDate.parse("2021-01-01")));
         assert(savedInstallment.get(0).getInstallmentStatus() == 0);
         assert(savedInstallment.get(0).getInstallmentAmount() == 100000);
 
-        // Delete the installment
-        installmentService.deleteInstallment(installment.getId());
+        // Delete the installments in savedInstallment
+        installmentService.deleteInstallment(savedInstallment.get(0).getId());
 
         // Verify that the installment was deleted
-        ArrayList<InstallmentEntity> deletedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        List<InstallmentEntity> deletedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
         assert(deletedInstallment.isEmpty());
     }
 
@@ -54,15 +55,19 @@ class InstallmentServiceTest {
         installmentService.saveInstallment(installment);
 
         // Verify that the installment was saved
-        ArrayList<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        List<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
         assert(savedInstallment.size() == 1);
         assert(savedInstallment.get(0).getInstallmentRUT().equals("TestRUT"));
         assert(savedInstallment.get(0).getInstallmentPaymentDate().equals(LocalDate.parse("2021-01-01")));
         assert(savedInstallment.get(0).getInstallmentStatus() == 0);
         assert(savedInstallment.get(0).getInstallmentAmount() == 100000);
 
-        // Delete the installment
-        installmentService.deleteInstallment(installment.getId());
+        // Delete the installment in savedInstallment
+        installmentService.deleteInstallment(savedInstallment.get(0).getId());
+        // Verify that the installment was deleted
+        List<InstallmentEntity> deletedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        assert(deletedInstallment.isEmpty());
+
     }
 
     @Test
@@ -83,7 +88,7 @@ class InstallmentServiceTest {
         installmentService.saveInstallment(paidInstallment);
 
         // Get all paid installments
-        ArrayList<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT("TestRUT");
+        List<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT("TestRUT");
 
         // Verify that there is only one paid installment
         assert(paidInstallments.size() == 1);
@@ -96,6 +101,9 @@ class InstallmentServiceTest {
         // Delete the installments
         installmentService.deleteInstallment(unpaidInstallment.getId());
         installmentService.deleteInstallment(paidInstallment.getId());
+        // Verify that the installments were deleted
+        List<InstallmentEntity> deletedInstallments = installmentService.findAllByInstallmentRUT("TestRUT");
+        assert(deletedInstallments.isEmpty());
     }
 
     @Test
@@ -118,7 +126,7 @@ class InstallmentServiceTest {
         installmentService.saveInstallment(unpaidInstallment2);
 
         // Get all overdue installments
-        ArrayList<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT("TestRUT");
+        List<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT("TestRUT");
 
         // Verify that there is only one overdue installment
         assert(overdueInstallments.get(0).getInstallmentRUT().equals("TestRUT"));
@@ -130,24 +138,35 @@ class InstallmentServiceTest {
         // Delete the installments
         installmentService.deleteInstallment(unpaidInstallment.getId());
         installmentService.deleteInstallment(unpaidInstallment2.getId());
+        // Verify that the installments were deleted
+        List<InstallmentEntity> deletedInstallments = installmentService.findAllByInstallmentRUT("TestRUT");
+        assert(deletedInstallments.isEmpty());
     }
 
     @Test
         // Test for isInstallmentOverdue method
     void isInstallmentOverdueFalse() {
         InstallmentEntity installment = new InstallmentEntity();
+
         installment.setInstallmentRUT("TestRUT");
         installment.setInstallmentPaymentDate(LocalDate.of(2023, 10, 1));
         installment.setInstallmentStatus(0);
         installment.setInstallmentOverdueStatus(0);
         installment.setInstallmentOverduePrice(150000);
         installment.setInstallmentAmount(100000);
-
         installmentService.saveInstallment(installment);
-        assertFalse(installmentService.updateInstallmentOverdueStatus(installment));
+
+        installmentService.updateInstallmentOverdueStatus(installment);
+
+        // Check that the installment is overdue
+        assertEquals(1, installment.getInstallmentOverdueStatus());
+
         // Find the installment by RUT and delete it
-        ArrayList<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        List<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
         installmentService.deleteInstallment(savedInstallment.get(0).getId());
+        // Verify that the installment was deleted
+        List<InstallmentEntity> deletedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        assert(deletedInstallment.isEmpty());
     }
 
     @Test
@@ -164,8 +183,11 @@ class InstallmentServiceTest {
         installmentService.saveInstallment(installment);
         assertTrue(installmentService.updateInstallmentOverdueStatus(installment));
         // Find the installment by RUT and delete it
-        ArrayList<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        List<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
         installmentService.deleteInstallment(savedInstallment.get(0).getId());
+        // Verify that the installment was deleted
+        List<InstallmentEntity> deletedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        assert(deletedInstallment.isEmpty());
     }
 
     @Test
@@ -181,11 +203,15 @@ class InstallmentServiceTest {
 
         installmentService.saveInstallment(installment);
         // Find the installment by RUT
-        ArrayList<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        List<InstallmentEntity> savedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
         installmentService.markInstallmentAsPAid(savedInstallment.get(0));
 
-        assertEquals(savedInstallment.get(0).getInstallmentStatus(), 1);
+        assertEquals(1,savedInstallment.get(0).getInstallmentStatus());
         installmentService.deleteInstallment(savedInstallment.get(0).getId());
+
+        // Verify that the installment was deleted
+        List<InstallmentEntity> deletedInstallment = installmentService.findAllByInstallmentRUT("TestRUT");
+        assert(deletedInstallment.isEmpty());
 
     }
 

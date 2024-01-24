@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 
@@ -221,8 +221,10 @@ public class AdministrationOffice {
 
     // Calculate the general interest
     public double calculateGeneralInterest(StudentEntity student) {
+        // Update the overdue installments
+        installmentService.updateInstallmentsOverdueStatusByRUT(student.getRut());
         // Get the overdue installments
-        ArrayList<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT(student.getRut());
+        List<InstallmentEntity> overdueInstallments = installmentService.findAllOverdueInstallmentsByRUT(student.getRut());
         // if there are overdue installments, calculate the interest and update the installment amount
         int overdueInstallmentsSize = overdueInstallments.size();
         // Update the overdue installments
@@ -238,7 +240,7 @@ public class AdministrationOffice {
             };
         }
         // Update every installment overdue price
-        ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
         for (InstallmentEntity installment : installments) {
             installment.setInstallmentOverduePrice((int) (installment.getInstallmentAmount() * interest));
         }
@@ -248,7 +250,7 @@ public class AdministrationOffice {
     // Update student numbers
     public void updateStudentNumbers(StudentEntity student) {
         // Get an array of the installments that match the RUT of the student
-        ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
         // Calculate the total amount paid and paid installments
         int totalAmountPaid = 0;
         int paidInstallments = 0;
@@ -280,7 +282,7 @@ public class AdministrationOffice {
     // Update last payment date
     public void updateLastPaymentDate(StudentEntity student) {
         // Get the paid installments of the student
-        ArrayList<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT(student.getRut());
+        List<InstallmentEntity> paidInstallments = installmentService.findAllPaidInstallmentsByRUT(student.getRut());
         // Get the payment date of the closest installment to the current date
         LocalDate closestPaymentDate = LocalDate.of(LocalDate.now().getYear(), 1, 5);
         for (InstallmentEntity installment : paidInstallments) {
@@ -307,7 +309,7 @@ public class AdministrationOffice {
             agreedInstallments = maxInstallments;
         }
         // Get an array of the installments that match the RUT of the student
-        ArrayList<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> installments = installmentService.findAllByInstallmentRUT(student.getRut());
         // Calculate the number of installments that are missing
         int missingInstallments = agreedInstallments - installments.size();
 

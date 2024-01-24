@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -806,7 +807,7 @@ class AdministrationOfficeTest {
         student.setGraduationYear(2020);
         student.setExamsTaken(2);
         student.setAverageGrade(800);
-        student.setPaymentMethod("Cash");
+        student.setPaymentMethod("Installments");
         student.setAgreedInstallments(3);
         student.setInstallmentsPaid(1);
         student.setTotalAmountPaid(785000);
@@ -814,7 +815,7 @@ class AdministrationOfficeTest {
 
         // Simulating the payment in installments
         double annualCostInstallments = administrationOffice.calculateAnnualCostInstallments(student);
-        assertEquals(1130400, annualCostInstallments, 1.0);
+        assertEquals(1193200, annualCostInstallments, 1.0);
     }
 
     @Test
@@ -937,7 +938,7 @@ class AdministrationOfficeTest {
         // Simulating the payment in installments
         administrationOffice.checkMissingInstallments(student);
         // Getting the installments
-        ArrayList<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
         for (InstallmentEntity installment: studentInstallments) {
             System.out.println(installment);
         }
@@ -945,7 +946,7 @@ class AdministrationOfficeTest {
         // Calculating the general interest
         administrationOffice.calculateGeneralInterest(student);
         // Getting the installments with the interest
-        ArrayList<InstallmentEntity> studentInstallmentsWithInterest = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> studentInstallmentsWithInterest = installmentService.findAllByInstallmentRUT(student.getRut());
         for (InstallmentEntity installment: studentInstallmentsWithInterest) {
             System.out.println(installment);
         }
@@ -981,14 +982,14 @@ class AdministrationOfficeTest {
         // Simulating the payment in installments
         administrationOffice.checkMissingInstallments(student);
 
-        // Updating the student numbers
-        administrationOffice.updateStudentNumbers(student);
+        // Updating the student
+        administrationOffice.updateStudent(student);
 
         // Checking the number of installments
-        assertEquals(student.getAgreedInstallments(),student.getOverdueInstallments(),0.0);
+        assertEquals(0,student.getOverdueInstallments());
 
         // Deleting the installments
-        ArrayList<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
         for (InstallmentEntity installment: studentInstallments) {
             installmentService.deleteInstallment(installment.getId());
         }
@@ -1021,7 +1022,7 @@ class AdministrationOfficeTest {
         installment.setInstallmentRUT(student.getRut());
         installment.setInstallmentAmount(1256000);
         installment.setInstallmentStatus(1);
-        installment.setInstallmentPaymentDate(LocalDate.of(2023, 2, 1));
+        installment.setInstallmentPaymentDate(LocalDate.of(2024, 2, 1));
         installment.setInstallmentOverdueStatus(0);
         installment.setInstallmentOverduePrice(0);
 
@@ -1059,7 +1060,7 @@ class AdministrationOfficeTest {
         // Simulating the payment in installments
         administrationOffice.checkMissingInstallments(student);
 
-        ArrayList<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
+        List<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
         assertEquals(student.getAgreedInstallments(), studentInstallments.size(), 0.0);
 
         // Deleting the installments

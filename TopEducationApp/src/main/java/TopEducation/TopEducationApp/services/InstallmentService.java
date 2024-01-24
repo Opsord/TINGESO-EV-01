@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 
@@ -22,7 +22,7 @@ public class InstallmentService {
         installmentRepository.save(installment);
     }
 
-    // Delete an installment
+    // Delete an installment by id
     public void deleteInstallment(Long id) {
         try {
             installmentRepository.deleteById(id);
@@ -42,17 +42,17 @@ public class InstallmentService {
     // Find by methods
 
     // Find all installments by student RUT
-    public ArrayList<InstallmentEntity> findAllByInstallmentRUT(String installmentRUT) {
+    public List<InstallmentEntity> findAllByInstallmentRUT(String installmentRUT) {
         return (installmentRepository.findAllInstallmentsByRUT(installmentRUT));
     }
 
     // Find all paid installments by student RUT
-    public ArrayList<InstallmentEntity> findAllPaidInstallmentsByRUT(String installmentRUT) {
+    public List<InstallmentEntity> findAllPaidInstallmentsByRUT(String installmentRUT) {
         return (installmentRepository.findAllPaidInstallmentsByRUT(installmentRUT));
     }
 
     // Find all overdue installments by student RUT
-    public ArrayList<InstallmentEntity> findAllOverdueInstallmentsByRUT(String installmentRUT) {
+    public List<InstallmentEntity> findAllOverdueInstallmentsByRUT(String installmentRUT) {
         return (installmentRepository.findAllOverdueInstallmentsByRUT(installmentRUT));
     }
 
@@ -66,6 +66,14 @@ public class InstallmentService {
         }
         installment.setInstallmentOverdueStatus(0);
         return false;
+    }
+
+    // Verify overdue installments and update status given a student RUT
+    public void updateInstallmentsOverdueStatusByRUT(String installmentRUT) {
+        List<InstallmentEntity> installments = findAllByInstallmentRUT(installmentRUT);
+        for (InstallmentEntity installment : installments) {
+            updateInstallmentOverdueStatus(installment);
+        }
     }
 
     // Change installment status to pay

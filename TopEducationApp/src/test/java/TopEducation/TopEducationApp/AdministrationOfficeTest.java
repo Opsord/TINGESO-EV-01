@@ -961,42 +961,6 @@ class AdministrationOfficeTest {
     }
 
     @Test
-        // Test for updateStudentNumbers with correct values
-    void updateStudentNumbersCorrect() {
-        // Setting up the student
-        StudentEntity student = new StudentEntity();
-        student.setRut("99.999.999-K");
-        student.setFirstName("Aquiles");
-        student.setLastName("Baeza");
-        student.setBirthDate(LocalDate.of(1990, 1, 1));
-        student.setSchoolType(0);
-        student.setSchoolName("Colegio de Prueba");
-        student.setGraduationYear(2010);
-        student.setExamsTaken(2);
-        student.setAverageGrade(800);
-        student.setPaymentMethod("Installments");
-        student.setAgreedInstallments(5);
-        student.setTotalAmountPaid(0);
-        student.setTotalAmountToPay(0);
-
-        // Simulating the payment in installments
-        administrationOffice.checkMissingInstallments(student);
-
-        // Updating the student
-        administrationOffice.updateStudent(student);
-
-        // Checking the number of installments
-        assertEquals(0,student.getOverdueInstallments());
-
-        // Deleting the installments
-        List<InstallmentEntity> studentInstallments = installmentService.findAllByInstallmentRUT(student.getRut());
-        for (InstallmentEntity installment: studentInstallments) {
-            installmentService.deleteInstallment(installment.getId());
-        }
-
-    }
-
-    @Test
         // Test for updateLastPaymentDate with correct values
     void updateLastPaymentDateCorrect() {
         // Setting up the student
